@@ -18,7 +18,8 @@
             }
 
             if (isset($_SESSION['dataapi']['variables'][$receptor->getTable()->getIdentification()][$name])) {
-                new ActiveVariable($receptor, $_SESSION['dataapi']['variables'][$receptor->getTable()->getIdentification()][$name], $this->data);
+                $var = getVariable($receptor->getTable(), $name);
+                new ActiveVariable($receptor, $var, $this->data);
             } else {
                 $_SESSION['dataapi']['log']['created']['inactive_variables'] += 1;
                 $_SESSION['dataapi']['inactive_variables'][$receptor->getBruteId()][$name] = $this;

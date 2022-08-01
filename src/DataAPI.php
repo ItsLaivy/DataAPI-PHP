@@ -2,10 +2,15 @@
 
     const DEBUG = false;
 
+    // Se true, caso uma tabela/banco de dados/variável já criada seja criada
+    // novamente, um erro será lançado (Receptores não estão inclusos)
+    const EXISTS_ERROR = false;
+
     // Início da Sessão (onde salvará os receptores, bancos, variáveis, tabelas, etc...)
     session_start();
-    session_unset();
+    if (DEBUG) session_unset();
     if (!isset($_SESSION['dataapi'])) {
+        echo "not set";
         $_SESSION['dataapi'] = array();
 
         /**
@@ -56,6 +61,10 @@
     require_once("modules/sql/query/DataResult.php");
     require_once("modules/sql/query/DataStatement.php");
 
+    require_once("modules/sql/DatabaseType.php");
+    require_once("modules/sql/MySQLDatabaseType.php");
+    require_once("modules/sql/SQLiteDatabaseType.php");
+
     require_once("modules/Database.php");
     require_once("modules/Table.php");
     require_once("modules/Variable.php");
@@ -70,7 +79,7 @@
      */
     function getDatabase(DatabaseType $type, string $name) {
         if (isset($_SESSION['dataapi']['databases'][$type->getName()][$name])) {
-            return $_SESSION['dataapi']['databases'][$type->getName()][$name];
+            return unserialize($_SESSION['dataapi']['databases'][$type->getName()][$name]);
         }
         throw new exception("Não foi possível encontrar nenhum banco de dados do tipo '". $type->getName() ."' de nome '". $name ."'");
     }
@@ -79,7 +88,7 @@
      */
     function getTable(Database $database, string $name) {
         if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
-            return $_SESSION['dataapi']['tables'][$database->getIdentification()][$name];
+            return unserialize($_SESSION['dataapi']['tables'][$database->getIdentification()][$name]);
         }
         throw new exception("Não foi possível encontrar nenhuma tabela no banco de dados '". $database->getName() ." ('". $database->getDatabaseType()->getName() ."')' de nome '". $name ."'");
     }
@@ -88,9 +97,18 @@
      */
     function getReceptor(Table $table, string $bruteId) {
         if (isset($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId])) {
-            return $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId];
+            return unserialize($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId]);
         }
         throw new exception("Não foi possível encontrar nenhum receptor na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de ID '". $bruteId ."'");
+    }
+    /**
+     * @throws exception se nenhum receptor com as informações for encontrado
+     */
+    function getVariable(Table $table, string $name) {
+        if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
+            return unserialize($_SESSION['dataapi']['variables'][$table->getIdentification()][$name]);
+        }
+        throw new exception("Não foi possível encontrar nenhuma variável na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de nome '". $name ."'");
     }
 
     function getAPIDate(): string {

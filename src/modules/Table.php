@@ -10,12 +10,13 @@
             $this->name = $name;
 
             if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
-                throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
+                if (EXISTS_ERROR) throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
+                return;
             }
 
             $this->database->query($this->database->getDatabaseType()->getTableCreationQuery($this->name));
 
-            $_SESSION['dataapi']['tables'][$database->getIdentification()][$name] = $this;
+            $_SESSION['dataapi']['tables'][$database->getIdentification()][$name] = serialize($this);
             $_SESSION['dataapi']['receptors'][$this->getIdentification()] = array();
 
             $_SESSION['dataapi']['log']['created']['tables'] += 1;

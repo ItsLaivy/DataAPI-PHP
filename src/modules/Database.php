@@ -1,9 +1,6 @@
 <?php
     require_once(dirname(__FILE__).'/../DataAPI.php');
 
-    require_once(dirname(__FILE__).'/sql/MySQLDatabaseType.php');
-    require_once(dirname(__FILE__).'/sql/SQLiteDatabaseType.php');
-
     class SQLiteDatabase extends Database {
 
         public SQLite3 $connection;
@@ -29,12 +26,11 @@
         }
 
         public function __sleep(): array {
-            $this->connection->close();
-            return array();
+            return parent::__sleep();
         }
         public function __wakeup(): void {
             $dbFileName = parent::getName() . ".db";
-            $this->connection->open($dbFileName);
+            if (isset($this->connection)) $this->connection->open($dbFileName);
         }
 
     }
@@ -64,15 +60,15 @@
     }
     abstract class Database {
 
-        private readonly DatabaseType $databaseType;
-        private readonly string $name;
+        protected readonly DatabaseType $databaseType;
+        protected readonly string $name;
 
-        private readonly string $user;
-        private readonly string $password;
-        private readonly int $port;
-        private readonly string $address;
+        protected readonly string $user;
+        protected readonly string $password;
+        protected readonly int $port;
+        protected readonly string $address;
 
-        private readonly string $path;
+        protected readonly string $path;
 
         abstract function statement(string $query): DataStatement;
         abstract function query(string $query): DataResult;
@@ -92,14 +88,27 @@
             $this->path = $path;
 
             if (isset($_SESSION['dataapi']['databases'][$databaseType->getName()][$name])) {
-                throw new exception("já existe um banco de dados criado com esse tipo de conexão e nome");
+                if (EXISTS_ERROR) throw new exception("já existe um banco de dados criado com esse tipo de conexão e nome");
+                return;
             }
 
-            $_SESSION['dataapi']['databases'][$databaseType->getName()][$name] = $this;
+            $_SESSION['dataapi']['databases'][$databaseType->getName()][$name] = serialize($this);
             $_SESSION['dataapi']['tables'][$this->getIdentification()] = array();
 
             $_SESSION['dataapi']['log']['queries'][$name] = 0;
             $_SESSION['dataapi']['log']['created']['databases'] += 1;
+        }
+
+        public function __sleep(): array {
+            return array(
+                'databaseType',
+                'name',
+                'user',
+                'password',
+                'port',
+                'address',
+                'path'
+            );
         }
 
         /**

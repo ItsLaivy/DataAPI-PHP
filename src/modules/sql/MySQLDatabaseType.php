@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__).'/DatabaseType.php');
+    require_once(dirname(__FILE__).'/../../DataAPI.php');
 
     class MySQLDatabaseType extends DatabaseType {
 

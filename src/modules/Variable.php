@@ -14,12 +14,13 @@
             $this->temporary = $temporary;
 
             if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
-                throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
+                if (EXISTS_ERROR) throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
+                return;
             }
 
             $table->getDatabase()->query($table->getDatabase()->getDatabaseType()->getColumnCreationQuery($table->getName(), $name, serialize($default)));
 
-            $_SESSION['dataapi']['variables'][$table->getIdentification()][$name] = $this;
+            $_SESSION['dataapi']['variables'][$table->getIdentification()][$name] = serialize($this);
             $_SESSION['dataapi']['log']['created']['variables'] += 1;
         }
 

@@ -52,7 +52,7 @@
                 $row++;
             }
 
-            $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId] = $this;
+            $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId] = serialize($this);
             $_SESSION['dataapi']['log']['created']['receptors'] += 1;
         }
 
@@ -67,8 +67,8 @@
         public function getInactiveVariables() : array {
             return $_SESSION['dataapi']['inactive_variables'][$this->getBruteId()];
         } public function getActiveVariables() : array {
-            return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
-        }
+        return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
+    }
 
         /**
          * @throws exception caso a variável não seja encontrada
@@ -118,11 +118,10 @@
             $this->autoSaveWhenSet = $autoSaveWhenSet;
         }
 
-
-
         public function save(): void {
             $query = "";
             foreach ($this->getActiveVariables() as $variable) {
+                echo $variable->getVariable()->getName() . ":'" . serialize($variable->getData()) . "'";
                 $query = $query . "`".$variable->getVariable()->getName()."`='".serialize($variable->getData())."',";
             }
             $query = $query . "`last_update`='".getAPIDate()."'";

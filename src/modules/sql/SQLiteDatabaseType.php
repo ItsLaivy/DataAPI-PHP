@@ -1,5 +1,5 @@
 <?php
-    require_once(dirname(__FILE__).'/DatabaseType.php');
+require_once(dirname(__FILE__).'/../../DataAPI.php');
 
     class SQLiteDatabaseType extends DatabaseType {
 
@@ -7,6 +7,17 @@
          * Não é recomendado usar diretamente a variável, use somente caso os métodos statement() ou query() não sirvam para o seu uso
          */
         public SQLite3 $connection;
+
+        /**
+         * @var bool Os bancos de dados SQLite possuem um sistema de envio de erros muito
+         * "primitivo", então tive que silenciar a maioria deles por uma única via, até os que
+         * não deveriam. Caso esteja a enfrentar problemas na hora da execução, marque esta
+         * opção como true
+         *
+         * lembrando que isso fará com que ele dispare até os
+         * erros mais simples como "tabela já criada"
+         */
+        public bool $maximumDebug = false;
 
         public function __construct() {
             parent::__construct(
@@ -21,7 +32,8 @@
         }
 
         public function commonErrors(): array {
-            return array(0);
+            if (!$this->maximumDebug) return array(0);
+            else return array();
         }
     }
 
@@ -46,7 +58,7 @@
 
         public function execute(): DataResult {
             if (!isset($this->statement)) {
-                if (DEBUG) echo "Não foi possível realizar isso pois o statement não foi criado com sucesso<br>";
+                if (DEBUG) echo "Não foi possível realizar isso, pois o statement não foi criado com sucesso<br>";
                 return new SQLiteResult(null);
             }
 
@@ -60,7 +72,7 @@
 
         public function close(): void {
             if (!isset($this->statement)) {
-                if (DEBUG) echo "Não foi possível realizar isso pois o statement não foi criado com sucesso<br>";
+                if (DEBUG) echo "Não foi possível realizar isso, pois o statement não foi criado com sucesso<br>";
                 return;
             }
 
@@ -73,7 +85,7 @@
 
         public function bindParameters(string $param, mixed $var): void {
             if (!isset($this->statement)) {
-                if (DEBUG) echo "Não foi possível realizar isso pois o statement não foi criado com sucesso<br>";
+                if (DEBUG) echo "Não foi possível realizar isso, pois o statement não foi criado com sucesso<br>";
                 return;
             }
 
