@@ -1,6 +1,5 @@
 <?php
-
-require_once(dirname(__FILE__) . '/../../DataAPI.php');
+namespace DataAPI\System;
 
 abstract class DataResult {
 

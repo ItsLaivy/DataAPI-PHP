@@ -1,22 +1,24 @@
 <?php
-    require_once("ExceptionHandler.php");
+namespace DataAPI\System;
 
-    function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
-        echo "Erro na API de dados";
+use Throwable;
 
-        error_log('['.getAPIDate().'] "'. $errno . '" -> '. $errstr . ' ('.$errfile.':'.$errline.')', 3, dirname(__FILE__).'/errors.log');
-        error_log(PHP_EOL . "------------=------------" . PHP_EOL, 3, dirname(__FILE__).'/errors.log');
+function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
+    echo "Erro na API de dados";
 
-        exit;
-    }
-    function throwableHandler(Throwable $throwable) {
-        echo "Erro na API de dados";
+    error_log('['.getAPIDate().'] "'. $errno . '" -> '. $errstr . ' ('.$errfile.':'.$errline.')', 3, dirname(__FILE__).'/errors.log');
+    error_log(PHP_EOL . "------------=------------" . PHP_EOL, 3, dirname(__FILE__).'/errors.log');
 
-        error_log('['.getAPIDate().'] ('.$throwable->getCode().') '. $throwable, 3, dirname(__FILE__).'/errors.log');
-        error_log(PHP_EOL . "------------=------------" . PHP_EOL, 3, dirname(__FILE__).'/errors.log');
+    exit;
+}
+function throwableHandler(Throwable $throwable) {
+    echo "Erro na API de dados";
 
-        exit;
-    }
+    error_log('['.getAPIDate().'] ('.$throwable->getCode().') '. $throwable, 3, dirname(__FILE__).'/errors.log');
+    error_log(PHP_EOL . "------------=------------" . PHP_EOL, 3, dirname(__FILE__).'/errors.log');
 
-    set_error_handler('errorHandler');
-    set_exception_handler('throwableHandler');
+    exit;
+}
+
+set_error_handler('DataAPI\System\errorHandler');
+set_exception_handler('DataAPI\System\throwableHandler');
