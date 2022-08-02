@@ -1,17 +1,23 @@
 <?php
+
     require_once(dirname(__FILE__).'/../DataAPI.php');
 
-    class SQLiteDatabase extends Database {
+    abstract class SQLDatabase extends Database {
+
+        abstract function statement(string $query): DataStatement;
+        abstract function query(string $query): DataResult;
+
+        abstract function open();
+        abstract function close();
+
+    }
+
+    class SQLiteDatabase extends SQLDatabase {
 
         public SQLite3 $connection;
 
-        public function __construct(string $name, string $path) {
-            parent::__construct(SQLITE_DATABASE_TYPE, $name, "", "", 0, "", $path);
-
-
-            $dbFileName = parent::getName() . ".db";
-            $this->connection = new SQLite3($dbFileName);
-            $this->connection->enableExceptions(true);
+        public function __construct(SQLiteDatabaseType $type, string $name) {
+            parent::__construct($type, $name);
         }
 
         public function statement(string $query): DataStatement {
@@ -21,7 +27,6 @@
         public function query(string $query): DataResult {
             $stmt = $this->statement($query);
             $result = $stmt->execute();
-            $stmt->close();
             return $result;
         }
 
@@ -33,17 +38,37 @@
             if (isset($this->connection)) $this->connection->open($dbFileName);
         }
 
+        public function getFileName(): string {
+            return $this->databaseType->path . "/" . $this->getName() . ".db";
+        }
+
+        function open() {
+            // TODO: Implement open() method.
+        }
+
+        function close() {
+            // TODO: Implement close() method.
+        }
     }
-    class MySQLDatabase extends Database {
+
+    class MySQLDatabase extends SQLDatabase {
 
         public mysqli $connection;
 
-        public function __construct(string $name, string $user, string $password, int $port, string $address) {
-            parent::__construct(MYSQL_DATABASE_TYPE, $name, $user, $password, $port, $address, "");
+        protected readonly string $user;
+        protected readonly string $password;
+        protected readonly int $port;
+        protected readonly string $address;
 
-            $this->connection = new mysqli($address, $user, $password);
-            $this->query("CREATE DATABASE " . $name);
-            $this->connection->select_db($name);
+        public function __construct(MySQLDatabaseType $type, string $name) {
+            parent::__construct($type, $name);
+
+            $this->user = $type->user;
+            $this->password = $type->password;
+            $this->port = $type->port;
+            $this->address = $type->address;
+
+            $this->connection = new mysqli($type->address, $this->user, $this->password, $name, $this->port);
         }
 
         public function statement(string $query): DataStatement {
@@ -53,49 +78,53 @@
         public function query(string $query): DataResult {
             $stmt = $this->statement($query);
             $result = $stmt->execute();
-            $stmt->close();
             return $result;
         }
 
+        function open() {
+            $this->connection = new mysqli($this->getAddress(), $this->getUser(), $this->getPassword(), $this->getName(), $this->getPort());
+        }
+
+        function close() {
+            if (isset($this->connection)) $this->connection->close();
+        }
+
+        public function __wakeup(): void {
+            $this->open();
+        }
+
+        public function __sleep(): array {
+            $super = parent::__sleep();
+            array_push($super, 'user','password','port','address');
+            $this->close();
+            return $super;
+        }
+
     }
+
     abstract class Database {
 
         protected readonly DatabaseType $databaseType;
         protected readonly string $name;
 
-        protected readonly string $user;
-        protected readonly string $password;
-        protected readonly int $port;
-        protected readonly string $address;
-
-        protected readonly string $path;
-
-        abstract function statement(string $query): DataStatement;
-        abstract function query(string $query): DataResult;
-
         /**
          * @throws exception caso o banco de dados já exista
          */
-        public function __construct(DatabaseType $databaseType, string $name, string $user, string $password, int $port, string $address, string $path) {
+        public function __construct(DatabaseType $databaseType, string $name) {
             $this->databaseType = $databaseType;
             $this->name = $name;
-
-            $this->user = $user;
-            $this->password = $password;
-            $this->port = $port;
-            $this->address = $address;
-
-            $this->path = $path;
 
             if (isset($_SESSION['dataapi']['databases'][$databaseType->getName()][$name])) {
                 if (EXISTS_ERROR) throw new exception("já existe um banco de dados criado com esse tipo de conexão e nome");
                 return;
             }
 
+            $_SESSION['dataapi']['log']['queries'][$name] = 0;
+
+            $databaseType->databaseLoad($this);
+
             $_SESSION['dataapi']['databases'][$databaseType->getName()][$name] = serialize($this);
             $_SESSION['dataapi']['tables'][$this->getIdentification()] = array();
-
-            $_SESSION['dataapi']['log']['queries'][$name] = 0;
             $_SESSION['dataapi']['log']['created']['databases'] += 1;
         }
 
@@ -103,12 +132,18 @@
             return array(
                 'databaseType',
                 'name',
-                'user',
-                'password',
-                'port',
-                'address',
-                'path'
             );
+        }
+
+        public function delete(): void {
+            foreach ($this->getTables() as $name => $table) {
+                $table->delete();
+            }
+            $this->getDatabaseType()->databaseDelete($this);
+        }
+
+        public function getTables(): array {
+            return $_SESSION['dataapi']['tables'][$this->getIdentification()];
         }
 
         /**
@@ -168,6 +203,3 @@
         }
 
     }
-
-    defined("MYSQL_DATABASE_TYPE") or define("MYSQL_DATABASE_TYPE", new MySQLDatabaseType());
-    defined("SQLITE_DATABASE_TYPE") or define("SQLITE_DATABASE_TYPE", new SQLiteDatabaseType());

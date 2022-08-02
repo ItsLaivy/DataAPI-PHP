@@ -6,7 +6,7 @@
         private readonly string $name;
         private readonly string $bruteId;
 
-        private readonly int $id;
+        private int $id;
 
         private bool $autoSaveWhenSet = false;
 
@@ -22,37 +22,12 @@
                 throw new exception("Já existe um receptor carregado com esse ID nessa tabela");
             }
 
-            // Processo de carregamento do receptor
-            $select = $table->getDatabase()->statement($table->getDatabase()->getDatabaseType()->getSelectQuery("*", $table->getName(), "bruteid = '". $bruteId ."'"));
-            $insert = $table->getDatabase()->statement($table->getDatabase()->getDatabaseType()->getInsertQuery($table->getName(), "name,bruteid,last_update", "'" . $name . "','" . $bruteId . "','" . getAPIDate() . "'"));
-
-            $result = $select->execute();
-            $assoc = $result->results();
-
-            // Verifica se o receptor não está criado
-            if (empty($assoc)) {
-                $insert->execute();
-                $insert->close();
-
-                $assoc = $select->execute()->results();
-            }
-
-            $select->close();
-
             $_SESSION['dataapi']['inactive_variables'][$bruteId] = array();
             $_SESSION['dataapi']['active_variables'][$bruteId] = array();
 
-            $row = 0;
-            foreach ($assoc as $key => $value) {
-                if ($row == 0) $this->id = $value; // ID
+            $this->getTable()->getDatabase()->getDatabaseType()->receptorLoad($this->getTable()->getDatabase(), $this);
 
-                if ($row > 3) {
-                    new InactiveVariable($this, $key, $value);
-                }
-                $row++;
-            }
-
-            $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId] = serialize($this);
+            $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId] = $this;
             $_SESSION['dataapi']['log']['created']['receptors'] += 1;
         }
 
@@ -62,6 +37,10 @@
             unset($_SESSION['dataapi']['inactive_variables'][$this->bruteId]);
 
             if ($save) $this->save();
+        }
+        public function delete() {
+            $this->unload(false);
+            $this->getTable()->getDatabase()->getDatabaseType()->receptorDelete($this->getTable()->getDatabase(), $this);
         }
 
         public function getInactiveVariables() : array {
@@ -119,14 +98,7 @@
         }
 
         public function save(): void {
-            $query = "";
-            foreach ($this->getActiveVariables() as $variable) {
-                echo $variable->getVariable()->getName() . ":'" . serialize($variable->getData()) . "'";
-                $query = $query . "`".$variable->getVariable()->getName()."`='".serialize($variable->getData())."',";
-            }
-            $query = $query . "`last_update`='".getAPIDate()."'";
-
-            $this->getTable()->getDatabase()->query($this->getTable()->getDatabase()->getDatabaseType()->getUpdateQuery($this->getTable()->getName(), $query, "bruteid='".$this->getBruteId()."'"));
+            $this->getTable()->getDatabase()->getDatabaseType()->save($this->getTable()->getDatabase(), $this);
         }
 
         /**
@@ -153,8 +125,15 @@
         /**
          * @return int ID no banco de dados
          */
-        public function getId(): mixed {
+        public function getId(): int {
             return $this->id;
+        }
+
+        /**
+         * @param int $id ID no banco de dados
+         */
+        public function setId(int $id): void {
+            $this->id = $id;
         }
 
     }

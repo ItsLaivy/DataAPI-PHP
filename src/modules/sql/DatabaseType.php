@@ -3,27 +3,10 @@
 
     abstract class DatabaseType {
 
-        // Queries
         private readonly string $name;
 
-        private readonly string $select;
-        private readonly string $insert;
-        private readonly string $update;
-        private readonly string $tableCreate;
-        private readonly string $columnCreate;
-        private readonly string $receptorDelete;
-        // Queries
-
-        public function __construct(string $name, string $select, string $insert, string $update, string $tableCreate, string $columnCreate, string $receptorDelete) {
+        public function __construct(string $name) {
             $this->name = $name;
-
-            $this->select = $select;
-            $this->insert = $insert;
-            $this->update = $update;
-            $this->tableCreate = $tableCreate;
-            $this->columnCreate = $columnCreate;
-            $this->receptorDelete = $receptorDelete;
-
             $_SESSION['dataapi']['databases'][$name] = array();
         }
 
@@ -31,51 +14,74 @@
          * @throws Throwable caso o erro não esteja categorizado em commonErrors()
          */
         public function throws(Throwable $throwable): void {
-            $throws = true;
-            if (DEBUG) echo "Possível erro; Código: '".$throwable->getCode()."' - '".$throwable->getMessage()."'<br>";
-            foreach ($this->commonErrors() as $code) {
-                if ($code == $throwable->getCode()) $throws = false;
-            } if ($throws) throw $throwable;
+            $this->throwsDirectly($throwable->getCode(), $throwable->getMessage());
         }
         public function throwsDirectly(int $tCode, string $tMessage): void {
             $throws = true;
-            if (DEBUG) echo "Possível erro; Código: '".$tCode."' - '".$tMessage."'<br>";
-            foreach ($this->commonErrors() as $code) {
+            if (DEBUG) echo "Possível erro de código: '".$tCode."' - '".$tMessage."'<br>";
+            foreach ($this->suppressedErrors() as $code) {
                 if ($code === $tCode) $throws = false;
-                echo $code . ":" . $tCode . "<br><br>";
             } if ($throws) throw new exception($tMessage, $tCode);
         }
 
-        public abstract function commonErrors(): array;
+        public abstract function suppressedErrors(): array;
 
         public function getName(): string {
             return $this->name;
         }
 
-        public function getSelectQuery(string $select, string $at, string $where): string {
-            return $this->replace($this->select, array($select, $at, $where));
-        }
-        public function getInsertQuery(string $into, string $columns, string $values): string {
-            return $this->replace($this->insert, array($into, $columns, $values));
-        }
-        public function getUpdateQuery(string $at, string $set, string $where): string {
-            return $this->replace($this->update, array($at, $set, $where));
-        }
-        public function getTableCreationQuery(string $name): string {
-            return $this->replace($this->tableCreate, array($name));
-        }
-        public function getColumnCreationQuery(string $at, string $name, string $default): string {
-            return $this->replace($this->columnCreate, array($at, $name, $default));
-        }
-        public function getDeleteReceptorQuery(string $at, string $bruteid): string {
-            return $this->replace($this->receptorDelete, array($at, $bruteid));
-        }
+        /**
+         * É usado para pegar os dados de um receptor no banco de dados
+         *
+         * @return array deve retornar uma array com o (key = nome da variável) e (value = valor serializado)
+         */
+        public abstract function data(Database $database, Receptor $receptor): array;
 
-        private function replace(string $str, array $a): string {
-            foreach ($a as $rpl) {
-                $str = preg_replace("/%/", $rpl, $str, 1);
-            }
-            return $str;
-        }
+        /**
+         * É chamado quando um receptor é carregado/criado
+         */
+        public abstract function receptorLoad(Database $database, Receptor $receptor): void;
+        /**
+         * É chamado quando um receptor é deletado
+         */
+        public abstract function receptorDelete(Database $database, Receptor $receptor): void;
+
+        /**
+         * É chamado sempre que um receptor precisa ser salvo
+         */
+        public abstract function save(Database $database, Receptor $receptor): void;
+
+        // Tabelas
+
+        /**
+         * É chamado sempre que uma tabela é carregada/criada
+         */
+        public abstract function tableLoad(Database $database, Table $table): void;
+        /**
+         * É chamado quando uma tabela é deletada
+         */
+        public abstract function tableDelete(Database $database, Table $table): void;
+
+        // Variáveis
+
+        /**
+         * É chamado quando uma variável é carregada/criada
+         */
+        public abstract function variableLoad(Database $database, Variable $variable): void;
+        /**
+         * É chamado quando uma variável é deletada
+         */
+        public abstract function variableDelete(Database $database, Variable $variable): void;
+
+        // Banco de dados
+
+        /**
+         * É chamado quando um banco de dados é carregado/criado
+         */
+        public abstract function databaseLoad(Database $database): void;
+        /**
+         * É chamado quando um banco de dados é deletado
+         */
+        public abstract function databaseDelete(Database $database): void;
 
     }

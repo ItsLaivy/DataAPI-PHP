@@ -14,9 +14,9 @@
                 return;
             }
 
-            $this->database->query($this->database->getDatabaseType()->getTableCreationQuery($this->name));
+            $this->database->getDatabaseType()->tableLoad($database, $this);
 
-            $_SESSION['dataapi']['tables'][$database->getIdentification()][$name] = serialize($this);
+            $_SESSION['dataapi']['tables'][$database->getIdentification()][$name] = $this;
             $_SESSION['dataapi']['receptors'][$this->getIdentification()] = array();
 
             $_SESSION['dataapi']['log']['created']['tables'] += 1;
@@ -27,6 +27,26 @@
          */
         public function getIdentification(): string {
             return $this->getDatabase()->getIdentification() . "-" . $this->getName();
+        }
+
+        public function delete(): void {
+            // Unload receptors
+            foreach ($this->getReceptors() as $name => $receptor) {
+                $receptor->unload(false);
+            }
+            // Unload variables
+            foreach ($this->getVariables() as $name => $variable) {
+                $variable->delete();
+            }
+
+            $this->database->getDatabaseType()->tableDelete($this->database, $this);
+        }
+
+        public function getReceptors(): array {
+            return $_SESSION['dataapi']['receptors'][$this->getIdentification()];
+        }
+        public function getVariables(): array {
+            return $_SESSION['dataapi']['variables'][$this->getIdentification()];
         }
 
         /**

@@ -18,10 +18,15 @@
                 return;
             }
 
-            $table->getDatabase()->query($table->getDatabase()->getDatabaseType()->getColumnCreationQuery($table->getName(), $name, serialize($default)));
+            $table->getDatabase()->getDatabaseType()->variableLoad($table->getDatabase(), $this);
 
-            $_SESSION['dataapi']['variables'][$table->getIdentification()][$name] = serialize($this);
+            $_SESSION['dataapi']['variables'][$table->getIdentification()][$name] = $this;
             $_SESSION['dataapi']['log']['created']['variables'] += 1;
+        }
+
+        public function delete(): void {
+            unset($_SESSION['dataapi']['variables'][$this->getTable()->getIdentification()][$this->getName()]);
+            $this->getTable()->getDatabase()->getDatabaseType()->variableDelete($this->getTable()->getDatabase(), $this);
         }
 
         /**

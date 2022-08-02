@@ -10,7 +10,6 @@
     session_start();
     if (DEBUG) session_unset();
     if (!isset($_SESSION['dataapi'])) {
-        echo "not set";
         $_SESSION['dataapi'] = array();
 
         /**
@@ -58,8 +57,8 @@
     //
 
     // Importes padrões
-    require_once("modules/sql/query/DataResult.php");
-    require_once("modules/sql/query/DataStatement.php");
+    require_once("modules/query/DataResult.php");
+    require_once("modules/query/DataStatement.php");
 
     require_once("modules/sql/DatabaseType.php");
     require_once("modules/sql/MySQLDatabaseType.php");
@@ -88,7 +87,7 @@
      */
     function getTable(Database $database, string $name) {
         if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
-            return unserialize($_SESSION['dataapi']['tables'][$database->getIdentification()][$name]);
+            return $_SESSION['dataapi']['tables'][$database->getIdentification()][$name];
         }
         throw new exception("Não foi possível encontrar nenhuma tabela no banco de dados '". $database->getName() ." ('". $database->getDatabaseType()->getName() ."')' de nome '". $name ."'");
     }
@@ -97,7 +96,7 @@
      */
     function getReceptor(Table $table, string $bruteId) {
         if (isset($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId])) {
-            return unserialize($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId]);
+            return $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId];
         }
         throw new exception("Não foi possível encontrar nenhum receptor na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de ID '". $bruteId ."'");
     }
@@ -106,7 +105,7 @@
      */
     function getVariable(Table $table, string $name) {
         if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
-            return unserialize($_SESSION['dataapi']['variables'][$table->getIdentification()][$name]);
+            return $_SESSION['dataapi']['variables'][$table->getIdentification()][$name];
         }
         throw new exception("Não foi possível encontrar nenhuma variável na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de nome '". $name ."'");
     }
