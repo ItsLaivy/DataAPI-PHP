@@ -7,6 +7,9 @@ class Table {
     private readonly Database $database;
     private readonly string $name;
 
+    /**
+     * @throws Exception Caso já exista uma tabela com esses valores no banco de dados
+     */
     public function __construct(Database $database, string $name) {
         $this->database = $database;
         $this->name = $name;

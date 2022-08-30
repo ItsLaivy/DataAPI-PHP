@@ -8,9 +8,9 @@ class ActiveVariable {
 
     private mixed $data;
 
-    public function __construct(Receptor $receptor, Variable $variable, mixed $data) {
+    public function __construct(Receptor $receptor, Variable $variable, string $data) {
         $this->variable = $variable;
-        $this->data = $data;
+        $this->data = unserialize($data);
         $this->receptor = $receptor;
 
         $_SESSION['dataapi']['log']['created']['active_variables'] += 1;

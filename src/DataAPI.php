@@ -11,9 +11,13 @@ const DEBUG = false;
 // novamente, um erro será lançado (Receptores não estão inclusos)
 const EXISTS_ERROR = false;
 
+// Se true, as variáveis serão salvas na sessão, pode melhorar um pouco a
+// performance e o carregamento do site, porém não é recomendado e está sob testes.
+const SESSION_SAVING = true;
+
 // Início da Sessão (onde salvará os receptores, bancos, variáveis, tabelas, etc...)
 session_start();
-if (DEBUG) session_unset();
+if (DEBUG || !SESSION_SAVING) session_unset();
 if (!isset($_SESSION['dataapi'])) {
     $_SESSION['dataapi'] = array();
 
@@ -65,14 +69,17 @@ require_once("ExceptionHandler.php");
 require_once("modules/query/DataResult.php");
 require_once("modules/query/DataStatement.php");
 
-require_once("modules/sql/DatabaseType.php");
-require_once("modules/sql/MySQLDatabaseType.php");
-require_once("modules/sql/SQLiteDatabaseType.php");
-
 require_once("modules/Database.php");
 require_once("modules/Table.php");
 require_once("modules/Variable.php");
 require_once("modules/Receptor.php");
+
+require_once("modules/DatabaseType.php");
+require_once("modules/sql/mysql/MySQLDatabaseType.php");
+require_once("modules/sql/sqlite/SQLiteDatabaseType.php");
+
+require_once("modules/sql/mysql/MySQLDatabase.php");
+require_once("modules/sql/sqlite/SQLiteDatabase.php");
 
 require_once("modules/variables/ActiveVariable.php");
 require_once("modules/variables/InactiveVariable.php");

@@ -16,7 +16,7 @@ class Variable {
         $this->temporary = $temporary;
 
         if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
-            if (EXISTS_ERROR) throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
+            if (EXISTS_ERROR) throw new exception("Já existe uma variável carregada com esse nome nessa tabela");
             return;
         }
 

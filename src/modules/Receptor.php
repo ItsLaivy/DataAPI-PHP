@@ -9,6 +9,7 @@ class Receptor {
     private readonly string $bruteId;
 
     private int $id;
+    private bool $new = false;
 
     private bool $autoSaveWhenSet = false;
 
@@ -34,11 +35,11 @@ class Receptor {
     }
 
     public function unload(bool $save): void {
+        if ($save) $this->save();
+
         unset($_SESSION['dataapi']['receptors'][$this->getTable()->getIdentification()][$this->bruteId]);
         unset($_SESSION['dataapi']['active_variables'][$this->bruteId]);
         unset($_SESSION['dataapi']['inactive_variables'][$this->bruteId]);
-
-        if ($save) $this->save();
     }
     public function delete() {
         $this->unload(false);
@@ -48,8 +49,8 @@ class Receptor {
     public function getInactiveVariables() : array {
         return $_SESSION['dataapi']['inactive_variables'][$this->getBruteId()];
     } public function getActiveVariables() : array {
-    return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
-}
+        return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
+    }
 
     /**
      * @throws exception caso a variável não seja encontrada
@@ -136,6 +137,20 @@ class Receptor {
      */
     public function setId(int $id): void {
         $this->id = $id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool {
+        return $this->new;
+    }
+
+    /**
+     * @param bool $new
+     */
+    public function setNew(bool $new): void {
+        $this->new = $new;
     }
 
 }

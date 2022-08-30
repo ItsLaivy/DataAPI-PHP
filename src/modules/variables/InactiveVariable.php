@@ -4,13 +4,13 @@ namespace DataAPI\System;
 class InactiveVariable {
 
     private readonly string $name;
-    private readonly mixed $data;
+    private readonly string $data;
 
     private readonly Receptor $receptor;
 
     public function __construct(Receptor $receptor, string $name, string $data) {
         $this->name = $name;
-        $this->data = unserialize($data);
+        $this->data = $data;
         $this->receptor = $receptor;
 
         if (isset($_SESSION['dataapi']['active_variables'][$receptor->getBruteId()][$name])) {
@@ -43,7 +43,7 @@ class InactiveVariable {
     /**
      * @return mixed valor da variável
      */
-    public function getData(): mixed {
+    public function getData(): string {
         return $this->data;
     }
 

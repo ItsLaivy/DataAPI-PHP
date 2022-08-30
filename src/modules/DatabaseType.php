@@ -10,7 +10,11 @@ abstract class DatabaseType {
 
     public function __construct(string $name) {
         $this->name = $name;
-        $_SESSION['dataapi']['databases'][$name] = array();
+
+        if (!isset($_SESSION['dataapi']['databases'][$name])) {
+            $_SESSION['dataapi']['databases'][$name] = array();
+        }
+        $_SESSION['dataapi']['databases'][$name][] = $this;
     }
 
     /**
@@ -21,10 +25,16 @@ abstract class DatabaseType {
     }
     public function throwsDirectly(int $tCode, string $tMessage): void {
         $throws = true;
-        if (DEBUG) echo "Possível erro de código: '".$tCode."' - '".$tMessage."'<br>";
         foreach ($this->suppressedErrors() as $code) {
             if ($code === $tCode) $throws = false;
-        } if ($throws) throw new exception($tMessage, $tCode);
+        }
+
+        if ($throws) {
+            if (DEBUG) echo "Erro no código: '".$tCode."' - '".$tMessage."'<br>";
+            throw new exception($tMessage, $tCode);
+        } else {
+            if (DEBUG) echo "Erro no código suprimido: '".$tCode."' - '".$tMessage."'<br>";
+        }
     }
 
     public abstract function suppressedErrors(): array;
@@ -32,6 +42,9 @@ abstract class DatabaseType {
     public function getName(): string {
         return $this->name;
     }
+
+    public abstract function open(): void;
+    public abstract function close(): void;
 
     /**
      * É usado para pegar os dados de um receptor no banco de dados
