@@ -26,6 +26,9 @@
       "src/modules/query/DataResult.php",
       "src/modules/query/DataStatement.php",
 
+      "src/modules/Database.php",
+      "src/modules/DatabaseType.php",
+
       "src/modules/sql/mysql/MySQLDatabase.php",
       "src/modules/sql/mysql/MySQLDatabaseType.php",
       "src/modules/sql/mysql/MySQLResult.php",
@@ -39,11 +42,9 @@
       "src/modules/variables/ActiveVariable.php",
       "src/modules/variables/InactiveVariable.php",
 
-      "src/modules/Database.php",
-      "src/modules/DatabaseType.php",
-      "src/modules/Receptor.php",
       "src/modules/Table.php",
       "src/modules/Variable.php",
+      "src/modules/Receptor.php",
 
       "src/DataAPI.php",
       "src/ExceptionHandler.php"
