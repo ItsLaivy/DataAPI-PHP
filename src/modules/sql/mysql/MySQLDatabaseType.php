@@ -1,9 +1,7 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
-namespace DataAPI\MySQL;
+namespace ItsLaivy\DataAPI\MySQL;
 
-require_once("MySQLDatabase.php");
-require_once("MySQLStatement.php");
-require_once("MySQLResult.php");
+require_once __DIR__ . '../../../vendor/autoload.php';
 
 use DataAPI\System\Database;
 use DataAPI\System\DatabaseType;

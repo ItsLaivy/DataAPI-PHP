@@ -1,5 +1,5 @@
 <?php
-namespace DataAPI\MySQL;
+namespace ItsLaivy\DataAPI\MySQL;
 
 use DataAPI\System\Database;
 

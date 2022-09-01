@@ -1,5 +1,7 @@
 <?php
-namespace DataAPI\System;
+namespace ItsLaivy\DataAPI\System;
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 use DateTime;
 use DateTimeZone;
@@ -60,30 +62,6 @@ if (!isset($_SESSION['dataapi'])) {
     $_SESSION['dataapi']['log']['created']['inactive_variables'] = 0;
     $_SESSION['dataapi']['log']['created']['active_variables'] = 0;
 }
-
-// Evita que os erros sejam exibidos ao cliente final para não haver exposição de dados sigilosos
-require_once("ExceptionHandler.php");
-//
-
-// Importes padrões
-require_once("modules/query/DataResult.php");
-require_once("modules/query/DataStatement.php");
-
-require_once("modules/Database.php");
-require_once("modules/Table.php");
-require_once("modules/Variable.php");
-require_once("modules/Receptor.php");
-
-require_once("modules/DatabaseType.php");
-require_once("modules/sql/mysql/MySQLDatabaseType.php");
-require_once("modules/sql/sqlite/SQLiteDatabaseType.php");
-
-require_once("modules/sql/mysql/MySQLDatabase.php");
-require_once("modules/sql/sqlite/SQLiteDatabase.php");
-
-require_once("modules/variables/ActiveVariable.php");
-require_once("modules/variables/InactiveVariable.php");
-//
 
 /**
  * @throws exception se nenhum banco de dados com as informações for encontrado

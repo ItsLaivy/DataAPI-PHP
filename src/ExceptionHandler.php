@@ -1,9 +1,10 @@
 <?php
-namespace DataAPI\System;
+namespace ItsLaivy\DataAPI\System;
 
+use JetBrains\PhpStorm\NoReturn;
 use Throwable;
 
-function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
+#[NoReturn] function errorHandler(int $errno, string $errstr, string $errfile, int $errline): void {
     echo "Erro na API de dados";
 
     error_log('['.getAPIDate().'] "'. $errno . '" -> '. $errstr . ' ('.$errfile.':'.$errline.')', 3, dirname(__FILE__) . '/errors.log');
@@ -11,7 +12,7 @@ function errorHandler(int $errno, string $errstr, string $errfile, int $errline)
 
     exit;
 }
-function throwableHandler(Throwable $throwable) {
+#[NoReturn] function throwableHandler(Throwable $throwable): void {
     echo "Erro na API de dados";
 
     error_log('['.getAPIDate().'] ('.$throwable->getCode().') '. $throwable, 3, dirname(__FILE__) . '/errors.log');

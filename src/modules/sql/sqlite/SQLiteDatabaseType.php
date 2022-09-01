@@ -3,11 +3,9 @@
 /** @noinspection SqlDialectInspection */
 /** @noinspection SqlNoDataSourceInspection */
 
-namespace DataAPI\SQLite;
+namespace ItsLaivy\DataAPI\SQLite;
 
-require_once("SQLiteDatabase.php");
-require_once("SQLiteStatement.php");
-require_once("SQLiteResult.php");
+require_once __DIR__ . '../../../vendor/autoload.php';
 
 use DataAPI\System\Database;
 use DataAPI\System\DatabaseType;

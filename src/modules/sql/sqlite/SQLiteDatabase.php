@@ -1,5 +1,5 @@
 <?php
-namespace DataAPI\SQLite;
+namespace ItsLaivy\DataAPI\SQLite;
 
 use DataAPI\System\Database;
 use DataAPI\System\DataResult;

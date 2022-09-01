@@ -1,5 +1,5 @@
 <?php
-namespace DataAPI\System;
+namespace ItsLaivy\DataAPI\System;
 
 abstract class DataResult {
 
