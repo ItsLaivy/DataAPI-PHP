@@ -15,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "itslaivy\\dataapi-php\\": "src/"
+      "ItsLaivy\\DataAPI-PHP\\": "src/"
     }
   },
   "license": "MIT"
