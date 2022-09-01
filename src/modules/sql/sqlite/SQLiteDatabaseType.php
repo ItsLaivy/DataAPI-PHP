@@ -5,7 +5,7 @@
 
 namespace ItsLaivy\DataAPI\SQLite;
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use ItsLaivy\DataAPI\System\Database;
 use ItsLaivy\DataAPI\System\DatabaseType;

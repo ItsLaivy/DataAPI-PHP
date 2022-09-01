@@ -1,7 +1,7 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
 namespace ItsLaivy\DataAPI\MySQL;
 
-require_once __DIR__ . '../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Exception;
 use ItsLaivy\DataAPI\System\Database;
