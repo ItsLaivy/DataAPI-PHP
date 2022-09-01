@@ -14,7 +14,9 @@
     "vendor-dir": "src/vendor/"
   },
   "require": {
-    "php": ">=8.1"
+    "php": ">=8.1",
+    "ext-mysqli": "*",
+    "ext-sqlite3": "*"
   },
   "autoload": {
     "psr-4": {

@@ -7,15 +7,15 @@ namespace ItsLaivy\DataAPI\SQLite;
 
 require_once __DIR__ . '../../../vendor/autoload.php';
 
-use DataAPI\System\Database;
-use DataAPI\System\DatabaseType;
-use DataAPI\System\InactiveVariable;
-use DataAPI\System\Receptor;
-use DataAPI\System\Table;
-use DataAPI\System\Variable;
+use ItsLaivy\DataAPI\System\Database;
+use ItsLaivy\DataAPI\System\DatabaseType;
+use ItsLaivy\DataAPI\System\InactiveVariable;
+use ItsLaivy\DataAPI\System\Receptor;
+use ItsLaivy\DataAPI\System\Table;
+use ItsLaivy\DataAPI\System\Variable;
 use Exception;
 use Throwable;
-use function DataAPI\System\getAPIDate;
+use function ItsLaivy\DataAPI\System\getAPIDate;
 
 class SQLiteDatabaseType extends DatabaseType {
 

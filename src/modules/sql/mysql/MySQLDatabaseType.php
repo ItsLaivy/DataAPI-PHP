@@ -3,17 +3,17 @@ namespace ItsLaivy\DataAPI\MySQL;
 
 require_once __DIR__ . '../../../vendor/autoload.php';
 
-use DataAPI\System\Database;
-use DataAPI\System\DatabaseType;
-use DataAPI\System\DataResult;
-use DataAPI\System\InactiveVariable;
-use DataAPI\System\Receptor;
-use DataAPI\System\Table;
-use DataAPI\System\Variable;
-use mysql_xdevapi\Exception;
+use Exception;
+use ItsLaivy\DataAPI\System\Database;
+use ItsLaivy\DataAPI\System\DatabaseType;
+use ItsLaivy\DataAPI\System\DataResult;
+use ItsLaivy\DataAPI\System\InactiveVariable;
+use ItsLaivy\DataAPI\System\Receptor;
+use ItsLaivy\DataAPI\System\Table;
+use ItsLaivy\DataAPI\System\Variable;
 use mysqli;
 use Throwable;
-use function DataAPI\System\getAPIDate;
+use function ItsLaivy\DataAPI\System\getAPIDate;
 
 class MySQLDatabaseType extends DatabaseType {
 
@@ -52,7 +52,7 @@ class MySQLDatabaseType extends DatabaseType {
         $this->treeConnection = new mysqli($this->address, $this->user, $this->password, null, $this->port);
 
         if ($this->treeConnection->connect_errno) {
-            throw new Exception("Não foi possível conectar-se ao banco de dados MySQL: '" . $this->treeConnection->connect_error . "'");
+            throw new exception("Não foi possível conectar-se ao banco de dados MySQL: '" . $this->treeConnection->connect_error . "'");
         }
         $this->treeConnection->set_charset("utf8");
         $this->conn_opened = true;

@@ -1,7 +1,7 @@
 <?php
 namespace ItsLaivy\DataAPI\SQLite;
 
-use DataAPI\System\DataResult;
+use ItsLaivy\DataAPI\System\DataResult;
 use SQLite3Result;
 
 class SQLiteResult extends DataResult {

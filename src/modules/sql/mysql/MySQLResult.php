@@ -1,7 +1,7 @@
 <?php
 namespace ItsLaivy\DataAPI\MySQL;
 
-use DataAPI\System\DataResult;
+use ItsLaivy\DataAPI\System\DataResult;
 use mysqli_result;
 
 class MySQLResult extends DataResult {
