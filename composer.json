@@ -1,0 +1,22 @@
+{
+  "name": "itslaivy/dataapi-php",
+  "type": "library",
+  "description": "A powerful database API manager easy-to-use",
+  "authors": [
+    {
+      "name": "Daniel Richard S. Meinicke",
+      "homepage": "https://laivy.codes/u/itslaivy",
+      "email": "dnlfg.contato@gmail.com",
+      "role": "Main Developer"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "itslaivy\\dataapi-php\\": "src/"
+    }
+  },
+  "license": "MIT"
+}
