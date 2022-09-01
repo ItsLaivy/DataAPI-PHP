@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f7b97c1e-a7aa-4206-b45a-325b928ba936" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/modules/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/Database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/DatabaseType.php" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/Receptor.php" beforeDir="false" afterPath="$PROJECT_DIR$/Receptor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/Table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/Variable.php" beforeDir="false" afterPath="$PROJECT_DIR$/Variable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/query/DataResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/DataResult.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/query/DataStatement.php" beforeDir="false" afterPath="$PROJECT_DIR$/DataStatement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/mysql/MySQLDatabase.php" beforeDir="false" afterPath="$PROJECT_DIR$/MySQLDatabase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/mysql/MySQLDatabaseType.php" beforeDir="false" afterPath="$PROJECT_DIR$/MySQLDatabaseType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/mysql/MySQLResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/MySQLResult.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/mysql/MySQLStatement.php" beforeDir="false" afterPath="$PROJECT_DIR$/MySQLStatement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/sqlite/SQLiteDatabase.php" beforeDir="false" afterPath="$PROJECT_DIR$/SQLiteDatabase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/sqlite/SQLiteDatabaseType.php" beforeDir="false" afterPath="$PROJECT_DIR$/SQLiteDatabaseType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/sqlite/SQLiteResult.php" beforeDir="false" afterPath="$PROJECT_DIR$/SQLiteResult.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/sql/sqlite/SQLiteStatement.php" beforeDir="false" afterPath="$PROJECT_DIR$/SQLiteStatement.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/variables/ActiveVariable.php" beforeDir="false" afterPath="$PROJECT_DIR$/ActiveVariable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/variables/InactiveVariable.php" beforeDir="false" afterPath="$PROJECT_DIR$/InactiveVariable.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2E9KDH2B7ZlGFFcFXGNVWTsPWEC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/dnlfg/Desktop/Github/DataAPI-PHP/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dnlfg\Desktop\Github\DataAPI-PHP\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f7b97c1e-a7aa-4206-b45a-325b928ba936" name="Changes" comment="" />
+      <created>1662002241860</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1662002241860</updated>
+      <workItem from="1662002244079" duration="1980000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
