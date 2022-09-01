@@ -1,6 +1,10 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
 namespace DataAPI\MySQL;
 
+require_once("MySQLDatabase.php");
+require_once("MySQLStatement.php");
+require_once("MySQLResult.php");
+
 use DataAPI\System\Database;
 use DataAPI\System\DatabaseType;
 use DataAPI\System\DataResult;

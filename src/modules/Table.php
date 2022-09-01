@@ -6,15 +6,11 @@ use Exception;
 class Table {
     private readonly Database $database;
     private readonly string $name;
-    private readonly bool $changesSensitive;
 
     /**
-     * @param Database $database the database
-     * @param string $name the Table name
-     * @param bool $changesSensitive if something is changed at the database while a receptor are loaded, the receptor will receive these new changes after a {@link Receptor::save()}
-     * @throws Exception if a table with that parameters already exists
+     * @throws Exception Caso já exista uma tabela com esses valores no banco de dados
      */
-    public function __construct(Database $database, string $name, bool $changesSensitive) {
+    public function __construct(Database $database, string $name) {
         $this->database = $database;
         $this->name = $name;
 
@@ -29,12 +25,6 @@ class Table {
         $_SESSION['dataapi']['receptors'][$this->getIdentification()] = array();
 
         $_SESSION['dataapi']['log']['created']['tables'] += 1;
-
-        $this->changesSensitive = $changesSensitive;
-        $var = new Variable("last_change", $this, 0, false);
-        if (!$changesSensitive) {
-            $var->delete();
-        }
     }
 
     /**
@@ -42,15 +32,6 @@ class Table {
      */
     public function getIdentification(): string {
         return $this->getDatabase()->getIdentification() . "-" . $this->getName();
-    }
-
-    /**
-     * if true, after a change at the table, when the receptor save, these new data will apply into it
-     *
-     * @return bool if table is change sensitive
-     */
-    public function isChangesSensitive(): bool {
-        return $this->changesSensitive;
     }
 
     public function delete(): void {

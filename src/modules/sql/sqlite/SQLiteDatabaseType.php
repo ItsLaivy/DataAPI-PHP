@@ -5,6 +5,10 @@
 
 namespace DataAPI\SQLite;
 
+require_once("SQLiteDatabase.php");
+require_once("SQLiteStatement.php");
+require_once("SQLiteResult.php");
+
 use DataAPI\System\Database;
 use DataAPI\System\DatabaseType;
 use DataAPI\System\InactiveVariable;
