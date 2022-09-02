@@ -4,39 +4,38 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb1c91d679045114d49d7694fd0baae3c
+class ComposerStaticInit2a26b607132348dfcee3561dae2dca2a
 {
     public static $files = array (
-        'f2a67745d1374d2bb27f243d83581022' => __DIR__ . '/../../..' . '/src/modules/query/DataResult.php',
-        'b55b81a68fe16b47d0ea72d4361a242f' => __DIR__ . '/../../..' . '/src/modules/query/DataStatement.php',
-        '9113ee134d37746a40908c0cc39ba9bf' => __DIR__ . '/../../..' . '/src/modules/Database.php',
-        '0468a6f14b5d67ce5ad978117ba3f04c' => __DIR__ . '/../../..' . '/src/modules/DatabaseType.php',
-        '7a523dc23f51ef7bef8b818811dc5c9b' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLDatabase.php',
-        '850e7f00e4145332c1b1882013e9302a' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLDatabaseType.php',
-        'c45f02a9550ecaf6ff106a7acd56b0b3' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLResult.php',
-        '3d28361cca74c66ba5e97648c2e1e6b3' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLStatement.php',
-        'eb8ae6c5396a571f45b090ec574f75ad' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteDatabase.php',
-        '3c672258e92fcadde239197e5365732b' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteDatabaseType.php',
-        '34b174f658ff45d3cdf1abccabb7886e' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteResult.php',
-        '04ed145fdff86b753b1673b19a01d5ce' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteStatement.php',
-        '7b82fd1b01e54ccb2b6b5b0250e4640f' => __DIR__ . '/../../..' . '/src/modules/variables/ActiveVariable.php',
-        'af61607c6b83d43a2987ed843d47e7fa' => __DIR__ . '/../../..' . '/src/modules/variables/InactiveVariable.php',
-        '9222a81b2e0c20414972bceccecb30ab' => __DIR__ . '/../../..' . '/src/modules/Table.php',
-        'db44a389810ac3741c793438f677b1fa' => __DIR__ . '/../../..' . '/src/modules/Variable.php',
-        'd1f224b08e133f55ce2a7652ee5d301f' => __DIR__ . '/../../..' . '/src/modules/Receptor.php',
-        '209cab67e8b0b267de5f1e3eb9ac9804' => __DIR__ . '/../../..' . '/src/DataAPI.php',
-        '20b397eb18c8b07b7c68c48f95f09105' => __DIR__ . '/../../..' . '/src/ExceptionHandler.php',
+        'ba7e99acacc8b103db43b1e7413b39a6' => __DIR__ . '/../../..' . '/src/modules/query/DataResult.php',
+        'a02efbab1b1260668701d04ec6e9cc85' => __DIR__ . '/../../..' . '/src/modules/query/DataStatement.php',
+        '4d3e003e487cb8379580d10703558005' => __DIR__ . '/../../..' . '/src/modules/Database.php',
+        '508bbe62e95b377484e42befd077798a' => __DIR__ . '/../../..' . '/src/modules/DatabaseType.php',
+        '364559ecec39c15989141251d4ac2813' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLDatabase.php',
+        '9ca1084ca9f8aa450e38345c6ea2cf4e' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLDatabaseType.php',
+        'cd5b07822dfcff8fd5638cf8e26cd79f' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLResult.php',
+        '6144659480e1b8d024c3c0799303f584' => __DIR__ . '/../../..' . '/src/modules/sql/mysql/MySQLStatement.php',
+        'febdcfb0ce92fde6875c6912ef8b737f' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteDatabase.php',
+        '4757e2315eefdfd05183b889b18dfd9b' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteDatabaseType.php',
+        'ef983174c0877bccb90ec03111053e56' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteResult.php',
+        '98f9ec945a1a7ce317cd1d324adb7e3f' => __DIR__ . '/../../..' . '/src/modules/sql/sqlite/SQLiteStatement.php',
+        '00a8be318c32a61dc83bc3ed90b4ceec' => __DIR__ . '/../../..' . '/src/modules/variables/ActiveVariable.php',
+        'ddf9a9f8740814782862ea344f7c937d' => __DIR__ . '/../../..' . '/src/modules/variables/InactiveVariable.php',
+        'addd9cea9cd53d103e320d55366c54ca' => __DIR__ . '/../../..' . '/src/modules/Table.php',
+        '172f8eca2304dd3e7f49a79c0bf069ad' => __DIR__ . '/../../..' . '/src/modules/Variable.php',
+        'e150450a2bdb4ac74cbe3aabd9b7acca' => __DIR__ . '/../../..' . '/src/modules/Receptor.php',
+        '4388c054de68b899cb4bd7f15f081335' => __DIR__ . '/../../..' . '/src/ExceptionHandler.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'I' => 
         array (
-            'ItsLaivy\\DataAPI-PHP\\' => 21,
+            'ItsLaivy\\DataAPI\\' => 17,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'ItsLaivy\\DataAPI-PHP\\' => 
+        'ItsLaivy\\DataAPI\\' => 
         array (
             0 => __DIR__ . '/../../..' . '/src',
         ),
@@ -49,9 +48,9 @@ class ComposerStaticInitb1c91d679045114d49d7694fd0baae3c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb1c91d679045114d49d7694fd0baae3c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb1c91d679045114d49d7694fd0baae3c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb1c91d679045114d49d7694fd0baae3c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2a26b607132348dfcee3561dae2dca2a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2a26b607132348dfcee3561dae2dca2a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2a26b607132348dfcee3561dae2dca2a::$classMap;
 
         }, null, ClassLoader::class);
     }

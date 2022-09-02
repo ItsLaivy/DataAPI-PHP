@@ -1,5 +1,5 @@
 {
-  "name": "itslaivy/dataapi-php",
+  "name": "itslaivy/dataapi",
   "type": "library",
   "description": "A powerful database API manager easy-to-use",
   "authors": [
@@ -20,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ItsLaivy\\DataAPI-PHP\\": "src/"
+      "ItsLaivy\\DataAPI\\": "src/"
     },
     "files": [
       "src/modules/query/DataResult.php",
@@ -46,7 +46,6 @@
       "src/modules/Variable.php",
       "src/modules/Receptor.php",
 
-      "src/DataAPI.php",
       "src/ExceptionHandler.php"
     ]
   },

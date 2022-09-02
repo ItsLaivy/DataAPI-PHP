@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    'ItsLaivy\\DataAPI-PHP\\' => array($baseDir . '/src'),
+    'ItsLaivy\\DataAPI\\' => array($baseDir . '/src'),
 );
