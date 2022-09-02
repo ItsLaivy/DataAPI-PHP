@@ -1,31 +1,52 @@
 <?php
-namespace ItsLaivy\DataAPI\Modules;
+namespace ItsLaivy\DataAPI\Modules\SQL;
 
 use Exception;
-use const ItsLaivy\DataAPI\EXISTS_ERROR;
 
-class Table {
-    private readonly Database $database;
+class SQLTable {
+
+    private readonly SQLDatabase $database;
     private readonly string $name;
+
+    private readonly array $receptors;
+    private readonly array $variables;
 
     /**
      * @throws Exception Caso já exista uma tabela com esses valores no banco de dados
      */
-    public function __construct(Database $database, string $name) {
+    public function __construct(SQLDatabase $database, string $name) {
         $this->database = $database;
         $this->name = $name;
 
+<<<<<<< Updated upstream:src/Modules/Table.php
         if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
             if (EXISTS_ERROR) throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
             return;
         }
 
         $this->database->getDatabaseType()->tableLoad($database, $this);
+=======
+        $this->database->getDatabaseType()->tableLoad($this);
+>>>>>>> Stashed changes:src/Modules/SQL/SQLTable.php
 
-        $_SESSION['dataapi']['tables'][$database->getIdentification()][$name] = $this;
-        $_SESSION['dataapi']['receptors'][$this->getIdentification()] = array();
+        $this->receptors = array();
+        $this->variables = array();
 
-        $_SESSION['dataapi']['log']['created']['tables'] += 1;
+        $this->database->getTables()[$name] = $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReceptors(): array {
+        return $this->receptors;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariables(): array {
+        return $this->variables;
     }
 
     /**
@@ -48,21 +69,10 @@ class Table {
         $this->database->getDatabaseType()->tableDelete($this->database, $this);
     }
 
-    public function getReceptors(): array {
-        return $_SESSION['dataapi']['receptors'][$this->getIdentification()];
-    }
-    public function getVariables(): array {
-        $vars = array();
-        foreach ($_SESSION['dataapi']['Variables'][$this->getIdentification()] as $name => $variable) {
-            $vars[] = $variable;
-        }
-        return $vars;
-    }
-
     /**
-     * @return Database banco de dados da tabela
+     * @return SQLDatabase banco de dados da tabela
      */
-    public function getDatabase(): Database {
+    public function getDatabase(): SQLDatabase {
         return $this->database;
     }
 

@@ -2,29 +2,39 @@
 namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
-use const ItsLaivy\DataAPI\EXISTS_ERROR;
+use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 
 class Variable {
     private readonly string $name;
-    private readonly Table $table;
+    private readonly SQLTable $table;
     private readonly mixed $default;
     private readonly bool $temporary;
 
+<<<<<<< Updated upstream
     public function __construct(string $name, Table $table, mixed $default, bool $temporary) {
+=======
+    /**
+     * @throws Exception
+     */
+    public function __construct(string $name, SQLTable $table, mixed $default, bool $temporary) {
+>>>>>>> Stashed changes
         $this->name = $name;
         $this->table = $table;
         $this->default = $default;
         $this->temporary = $temporary;
 
+<<<<<<< Updated upstream
         if (isset($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name])) {
             if (EXISTS_ERROR) throw new exception("Já existe uma variável carregada com esse nome nessa tabela");
             return;
         }
 
         $table->getDatabase()->getDatabaseType()->variableLoad($table->getDatabase(), $this);
+=======
+        $table->getDatabase()->getDatabaseType()->variableLoad($this);
+>>>>>>> Stashed changes
 
-        $_SESSION['dataapi']['Variables'][$table->getIdentification()][$name] = serialize($this);
-        $_SESSION['dataapi']['log']['created']['Variables'] += 1;
+        $this->table->getVariables()[$name] = $this;
     }
 
     public function delete(): void {
@@ -40,9 +50,9 @@ class Variable {
     }
 
     /**
-     * @return Table a tabela da variável
+     * @return SQLTable a tabela da variável
      */
-    public function getTable(): Table {
+    public function getTable(): SQLTable {
         return $this->table;
     }
 

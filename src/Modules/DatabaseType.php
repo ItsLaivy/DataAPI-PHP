@@ -1,21 +1,28 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules;
 
+use DateTime;
+use DateTimeZone;
 use Exception;
+use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use Throwable;
-use const ItsLaivy\DataAPI\DEBUG;
 
 abstract class DatabaseType {
 
     private readonly string $name;
 
+    private readonly array $DATABASES;
+
     public function __construct(string $name) {
         $this->name = $name;
+        $this->DATABASES = array();
+    }
 
-        if (!isset($_SESSION['dataapi']['databases'][$name])) {
-            $_SESSION['dataapi']['databases'][$name] = array();
-        }
-        $_SESSION['dataapi']['databases'][$name][] = $this;
+    /**
+     * @return array
+     */
+    public function getDatabases(): array {
+        return $this->DATABASES;
     }
 
     /**
@@ -24,6 +31,19 @@ abstract class DatabaseType {
     public function throws(Throwable $throwable): void {
         $this->throwsDirectly($throwable->getCode(), $throwable->getMessage());
     }
+<<<<<<< Updated upstream
+=======
+
+    function getAPIDate(): string {
+        $dt = new DateTime("now", new DateTimeZone('America/Sao_Paulo'));
+        $dt->setTimestamp(time());
+        return $dt->format('d/m/y H:i:s');
+    }
+
+    /**
+     * @throws Exception
+     */
+>>>>>>> Stashed changes
     public function throwsDirectly(int $tCode, string $tMessage): void {
         $throws = true;
         foreach ($this->suppressedErrors() as $code) {
@@ -31,10 +51,7 @@ abstract class DatabaseType {
         }
 
         if ($throws) {
-            if (DEBUG) echo "Erro no código: '".$tCode."' - '".$tMessage."'<br>";
             throw new exception($tMessage, $tCode);
-        } else {
-            if (DEBUG) echo "Erro no código suprimido: '".$tCode."' - '".$tMessage."'<br>";
         }
     }
 
@@ -73,11 +90,19 @@ abstract class DatabaseType {
     /**
      * É chamado sempre que uma tabela é carregada/criada
      */
+<<<<<<< Updated upstream
     public abstract function tableLoad(Database $database, Table $table): void;
     /**
      * É chamado quando uma tabela é deletada
      */
     public abstract function tableDelete(Database $database, Table $table): void;
+=======
+    public abstract function tableLoad(SQLTable $table): void;
+    /**
+     * É chamado quando uma tabela é deletada
+     */
+    public abstract function tableDelete(SQLTable $table): void;
+>>>>>>> Stashed changes
 
     // Variáveis
 

@@ -5,15 +5,14 @@
 
 namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
+use Exception;
 use ItsLaivy\DataAPI\Modules\Database;
 use ItsLaivy\DataAPI\Modules\DatabaseType;
 use ItsLaivy\DataAPI\Modules\Receptor;
-use ItsLaivy\DataAPI\Modules\Table;
-use Exception;
+use ItsLaivy\DataAPI\Modules\SQL\SQLReceptor;
+use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use ItsLaivy\DataAPI\Modules\Variable;
-use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 use Throwable;
-use function ItsLaivy\DataAPI\getAPIDate;
 
 class SQLiteDatabaseType extends DatabaseType {
 
@@ -44,6 +43,7 @@ class SQLiteDatabaseType extends DatabaseType {
         return $this->path;
     }
 
+<<<<<<< Updated upstream
     public function data(Database $database, Receptor $receptor): array {
         if (!($database instanceof SQLiteDatabase)) return array();
         return $database->query("SELECT * FROM '" . $receptor->getTable()->getName() . "' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
@@ -56,6 +56,20 @@ class SQLiteDatabaseType extends DatabaseType {
         if (empty($assoc)) {
             $this->query($database, "INSERT INTO '" . $receptor->getTable()->getName() . "' (name,bruteid,last_update) VALUES ('".$receptor->getName()."','".$receptor->getBruteId()."','".getAPIDate()."')");
             $assoc = $this->data($database, $receptor);
+=======
+    public function data(SQLReceptor|Receptor $receptor): array {
+        return $receptor->getTable()->getDatabase()->query("SELECT * FROM '" . $receptor->getTable()->getName() . "' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function receptorLoad(SQLReceptor|Receptor $receptor): void {
+        $assoc = $this->data($receptor);
+        if (empty($assoc)) {
+            $this->query($receptor->getTable()->getDatabase(), "INSERT INTO '" . $receptor->getTable()->getName() . "' (name,bruteid,last_update) VALUES ('".$receptor->getName()."','".$receptor->getBruteId()."','".parent::getAPIDate()."')");
+            $assoc = $this->data($receptor);
+>>>>>>> Stashed changes
             $receptor->setNew(true);
         }
 
@@ -64,12 +78,13 @@ class SQLiteDatabaseType extends DatabaseType {
             if ($row == 0) $receptor->setId($value); // ID
 
             if ($row > 3) {
-                new InactiveVariable($receptor, $key, $value);
+                $receptor->getVariables()[$key] = unserialize($value);
             }
             $row++;
         }
     }
 
+<<<<<<< Updated upstream
     public function receptorDelete(Database $database, Receptor $receptor): void {
         if (!($database instanceof SQLiteDatabase)) return;
         $this->query($database, "DELETE FROM '".$receptor->getTable()->getName()."' WHERE bruteid = '".$receptor->getBruteId()."'");
@@ -78,18 +93,38 @@ class SQLiteDatabaseType extends DatabaseType {
     public function save(Database $database, Receptor $receptor): void {
         if (!($database instanceof SQLiteDatabase)) return;
 
+=======
+    /**
+     * @throws Throwable
+     */
+    public function receptorDelete(SQLReceptor|Receptor $receptor): void {
+        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM '".$receptor->getTable()->getName()."' WHERE bruteid = '".$receptor->getBruteId()."'");
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function save(SQLReceptor|Receptor $receptor): void {
+>>>>>>> Stashed changes
         $query = "";
-        foreach ($receptor->getActiveVariables() as $variable) {
-            $query = $query . "`".$variable->getVariable()->getName()."`='".serialize($variable->getData())."',";
+        foreach ($receptor->getVariables() as $key => $value) {
+            $query = $query . "`".$key."`='".serialize($value)."',";
         }
-        $query = $query . "`last_update`='".getAPIDate()."'";
+        $query = $query . "`last_update`='".parent::getAPIDate()."'";
 
         $this->query($database, "UPDATE '".$receptor->getTable()->getName()."' SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
 
+<<<<<<< Updated upstream
     public function tableLoad(Database $database, Table $table): void {
         if (!($database instanceof SQLiteDatabase)) return;
 
+=======
+    /**
+     * @throws Throwable
+     */
+    public function tableLoad(SQLTable $table): void {
+>>>>>>> Stashed changes
         try {
             $this->query($database, "CREATE TABLE '".$table->getName()."' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' TEXT, bruteid TEXT, 'last_update' TEXT);");
         } catch (Throwable $e) {
@@ -100,9 +135,17 @@ class SQLiteDatabaseType extends DatabaseType {
         }
     }
 
+<<<<<<< Updated upstream
     public function tableDelete(Database $database, Table $table): void {
         if (!($database instanceof SQLiteDatabase)) return;
         $this->query($database, "DROP TABLE '".$table->getName() . "'");
+=======
+    /**
+     * @throws Throwable
+     */
+    public function tableDelete(SQLTable $table): void {
+        $this->query($table->getDatabase(), "DROP TABLE '".$table->getName() . "'");
+>>>>>>> Stashed changes
     }
 
     public function variableLoad(Database $database, Variable $variable): void {
