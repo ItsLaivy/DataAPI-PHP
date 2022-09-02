@@ -1,35 +1,28 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules;
 
-use Exception;
-use const ItsLaivy\DataAPI\EXISTS_ERROR;
-
-class Variable {
+abstract class Variable {
     private readonly string $name;
-    private readonly Table $table;
+    private readonly Database $database;
     private readonly mixed $default;
     private readonly bool $temporary;
 
-    public function __construct(string $name, Table $table, mixed $default, bool $temporary) {
+    public function __construct(Database $database, string $name, mixed $default, bool $temporary) {
         $this->name = $name;
-        $this->table = $table;
+        $this->database = $database;
         $this->default = $default;
         $this->temporary = $temporary;
 
-        if (isset($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name])) {
-            if (EXISTS_ERROR) throw new exception("Já existe uma variável carregada com esse nome nessa tabela");
-            return;
-        }
+        // $this->load();
+    }
 
-        $table->getDatabase()->getDatabaseType()->variableLoad($table->getDatabase(), $this);
-
-        $_SESSION['dataapi']['Variables'][$table->getIdentification()][$name] = serialize($this);
-        $_SESSION['dataapi']['log']['created']['Variables'] += 1;
+    protected function load(): void {
+        $this->getDatabase()->getDatabaseType()->variableLoad($this);
     }
 
     public function delete(): void {
-        unset($_SESSION['dataapi']['Variables'][$this->getTable()->getIdentification()][$this->getName()]);
-        $this->getTable()->getDatabase()->getDatabaseType()->variableDelete($this->getTable()->getDatabase(), $this);
+        unset($_SESSION['dataapi']['Variables'][$this->database->getIdentification()][$this->getName()]);
+        $this->database->getDatabaseType()->variableDelete($this);
     }
 
     /**
@@ -40,10 +33,10 @@ class Variable {
     }
 
     /**
-     * @return Table a tabela da variável
+     * @return Database
      */
-    public function getTable(): Table {
-        return $this->table;
+    public function getDatabase(): Database {
+        return $this->database;
     }
 
     /**

@@ -49,5 +49,3 @@ class MySQLStatement extends DataStatement {
     }
 
 }
-
-?>

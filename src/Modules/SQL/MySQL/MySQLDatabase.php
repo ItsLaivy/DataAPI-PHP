@@ -1,14 +1,13 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules\SQL\MySQL;
 
-use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\SQL\SQLDatabase;
+use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 
-class MySQLDatabase extends Database {
+class MySQLDatabase extends SQLDatabase {
 
     public function __construct(MySQLDatabaseType $type, string $name) {
         parent::__construct($type, $name);
     }
 
 }
-
-?>

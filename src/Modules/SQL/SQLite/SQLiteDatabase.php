@@ -1,11 +1,10 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
-use ItsLaivy\DataAPI\Modules\Database;
-use ItsLaivy\DataAPI\Modules\Query\DataResult;
+use ItsLaivy\DataAPI\Modules\SQL\SQLDatabase;
 use SQLite3;
 
-class SQLiteDatabase extends Database {
+class SQLiteDatabase extends SQLDatabase {
 
     private SQLite3 $connection;
     private bool $conn_opened = false;
@@ -15,10 +14,9 @@ class SQLiteDatabase extends Database {
     }
 
     public function statement(string $query): SQLiteStatement {
-        $_SESSION['dataapi']['log']['queries'][parent::getName()] += 1;
         return new SQLiteStatement($this, $query);
     }
-    public function query(string $query): DataResult {
+    public function query(string $query): SQLiteResult {
         $stmt = $this->statement($query);
         return $stmt->execute();
     }
@@ -51,5 +49,3 @@ class SQLiteDatabase extends Database {
         }
     }
 }
-
-?>

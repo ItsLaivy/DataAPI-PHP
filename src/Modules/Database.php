@@ -2,12 +2,15 @@
 namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
-use const ItsLaivy\DataAPI\EXISTS_ERROR;
 
 abstract class Database {
 
+    public static array $DATABASES = array();
+
     protected readonly DatabaseType $databaseType;
     protected readonly string $name;
+
+    private readonly array $tables;
 
     /**
      * @throws exception caso o banco de dados já exista
@@ -16,18 +19,19 @@ abstract class Database {
         $this->databaseType = $databaseType;
         $this->name = $name;
 
-        if (isset($_SESSION['dataapi']['databases'][$databaseType->getName()][$name])) {
-            if (EXISTS_ERROR) throw new exception("já existe um banco de dados criado com esse tipo de conexão e nome");
-            return;
-        }
-
-        $_SESSION['dataapi']['log']['queries'][$name] = 0;
-
         $databaseType->databaseLoad($this);
+        $databaseType->getDatabases()[$name] = $this;
 
-        $_SESSION['dataapi']['databases'][$databaseType->getName()][$name] = serialize($this);
-        $_SESSION['dataapi']['tables'][$this->getIdentification()] = array();
-        $_SESSION['dataapi']['log']['created']['databases'] += 1;
+        Database::$DATABASES[$name] = $this;
+
+        $this->tables = array();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTables(): array {
+        return $this->tables;
     }
 
     public function __sleep(): array {
@@ -38,14 +42,7 @@ abstract class Database {
     }
 
     public function delete(): void {
-        foreach ($this->getTables() as $name => $table) {
-            $table->delete();
-        }
         $this->getDatabaseType()->databaseDelete($this);
-    }
-
-    public function getTables(): array {
-        return $_SESSION['dataapi']['tables'][$this->getIdentification()];
     }
 
     /**

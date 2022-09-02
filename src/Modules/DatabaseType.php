@@ -1,21 +1,27 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules;
 
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Throwable;
-use const ItsLaivy\DataAPI\DEBUG;
 
 abstract class DatabaseType {
 
     private readonly string $name;
 
+    private readonly array $DATABASES;
+
     public function __construct(string $name) {
         $this->name = $name;
+        $this->DATABASES = array();
+    }
 
-        if (!isset($_SESSION['dataapi']['databases'][$name])) {
-            $_SESSION['dataapi']['databases'][$name] = array();
-        }
-        $_SESSION['dataapi']['databases'][$name][] = $this;
+    /**
+     * @return array
+     */
+    public function getDatabases(): array {
+        return $this->DATABASES;
     }
 
     /**
@@ -24,6 +30,16 @@ abstract class DatabaseType {
     public function throws(Throwable $throwable): void {
         $this->throwsDirectly($throwable->getCode(), $throwable->getMessage());
     }
+
+    function getAPIDate(): string {
+        $dt = new DateTime("now", new DateTimeZone('America/Sao_Paulo'));
+        $dt->setTimestamp(time());
+        return $dt->format('d/m/y H:i:s');
+    }
+
+    /**
+     * @throws Exception
+     */
     public function throwsDirectly(int $tCode, string $tMessage): void {
         $throws = true;
         foreach ($this->suppressedErrors() as $code) {
@@ -31,10 +47,7 @@ abstract class DatabaseType {
         }
 
         if ($throws) {
-            if (DEBUG) echo "Erro no código: '".$tCode."' - '".$tMessage."'<br>";
             throw new exception($tMessage, $tCode);
-        } else {
-            if (DEBUG) echo "Erro no código suprimido: '".$tCode."' - '".$tMessage."'<br>";
         }
     }
 
@@ -52,43 +65,32 @@ abstract class DatabaseType {
      *
      * @return array deve retornar uma array com o (key = nome da variável) e (value = valor serializado)
      */
-    public abstract function data(Database $database, Receptor $receptor): array;
+    public abstract function data(Receptor $receptor): array;
 
     /**
      * É chamado quando um receptor é carregado/criado
      */
-    public abstract function receptorLoad(Database $database, Receptor $receptor): void;
+    public abstract function receptorLoad(Receptor $receptor): void;
     /**
      * É chamado quando um receptor é deletado
      */
-    public abstract function receptorDelete(Database $database, Receptor $receptor): void;
+    public abstract function receptorDelete(Receptor $receptor): void;
 
     /**
      * É chamado sempre que um receptor precisa ser salvo
      */
-    public abstract function save(Database $database, Receptor $receptor): void;
-
-    // Tabelas
-
-    /**
-     * É chamado sempre que uma tabela é carregada/criada
-     */
-    public abstract function tableLoad(Database $database, Table $table): void;
-    /**
-     * É chamado quando uma tabela é deletada
-     */
-    public abstract function tableDelete(Database $database, Table $table): void;
+    public abstract function save(Receptor $receptor): void;
 
     // Variáveis
 
     /**
      * É chamado quando uma variável é carregada/criada
      */
-    public abstract function variableLoad(Database $database, Variable $variable): void;
+    public abstract function variableLoad(Variable $variable): void;
     /**
      * É chamado quando uma variável é deletada
      */
-    public abstract function variableDelete(Database $database, Variable $variable): void;
+    public abstract function variableDelete(Variable $variable): void;
 
     // Banco de dados
 

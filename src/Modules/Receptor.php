@@ -2,11 +2,12 @@
 namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
-use ItsLaivy\DataAPI\Modules\Variables\ActiveVariable;
-use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 
-class Receptor {
-    private readonly Table $table;
+abstract class Receptor {
+
+    public static array $RECEPTORS = array();
+
+    private readonly Database $database;
     private readonly string $name;
     private readonly string $bruteId;
 
@@ -15,76 +16,48 @@ class Receptor {
 
     private bool $autoSaveWhenSet = false;
 
+    private array $variables = array();
+
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado
      */
-    public function __construct(Table $table, string $name, string $bruteId) {
-        $this->table = $table;
+    public function __construct(Database $database, string $name, string $bruteId) {
+        $this->database = $database;
         $this->name = $name;
         $this->bruteId = $bruteId;
 
-        if (isset($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId])) {
-            throw new exception("Já existe um receptor carregado com esse ID nessa tabela");
-        }
+        $this->database->getDatabaseType()->receptorLoad($this);
 
-        $_SESSION['dataapi']['inactive_variables'][$bruteId] = array();
-        $_SESSION['dataapi']['active_variables'][$bruteId] = array();
-
-        $this->getTable()->getDatabase()->getDatabaseType()->receptorLoad($this->getTable()->getDatabase(), $this);
-
-        $_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId] = $this;
-        $_SESSION['dataapi']['log']['created']['receptors'] += 1;
+        Receptor::$RECEPTORS[$bruteId] = $this;
     }
 
     public function unload(bool $save): void {
         if ($save) $this->save();
-
-        unset($_SESSION['dataapi']['receptors'][$this->getTable()->getIdentification()][$this->bruteId]);
-        unset($_SESSION['dataapi']['active_variables'][$this->bruteId]);
-        unset($_SESSION['dataapi']['inactive_variables'][$this->bruteId]);
     }
-    public function delete() {
+    public function delete(): void {
         $this->unload(false);
-        $this->getTable()->getDatabase()->getDatabaseType()->receptorDelete($this->getTable()->getDatabase(), $this);
-    }
-
-    public function getInactiveVariables() : array {
-        return $_SESSION['dataapi']['inactive_variables'][$this->getBruteId()];
-    } public function getActiveVariables() : array {
-        return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
+        $this->database->getDatabaseType()->receptorDelete($this);
     }
 
     /**
-     * @throws exception caso a variável não seja encontrada
+     * @return array
      */
-    public function getInactiveVariable(string $name) : InactiveVariable {
-        if (!isset($_SESSION['dataapi']['inactive_variables'][$this->getBruteId()][$name])) {
-            throw new exception("Não existe nenhuma variável com o nome '".$name."' na tabela '".$this->getTable()->getName()."' do banco de dados '".$this->getTable()->getDatabase()->getName()."'");
-        }
-        return $_SESSION['dataapi']['inactive_variables'][$this->getBruteId()][$name];
-    }
-    /**
-     * @throws exception caso a variável não seja encontrada
-     */
-    public function getActiveVariable(string $name) : ActiveVariable {
-        if (!isset($_SESSION['dataapi']['active_variables'][$this->getBruteId()][$name])) {
-            throw new exception("Não existe nenhuma variável com o nome '".$name."' na tabela '".$this->getTable()->getName()."' do banco de dados '".$this->getTable()->getDatabase()->getName()."'");
-        }
-        return $_SESSION['dataapi']['active_variables'][$this->getBruteId()][$name];
+    public function getVariables(): array {
+        return $this->variables;
     }
 
     /**
-     * @throws exception caso a variável não seja encontrada
+     * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
-        return $this->getActiveVariable($name)->getData();
+        return $this->variables[$name];
     }
 
     /**
-     * @throws exception caso a variável não seja encontrada
+     * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
-        $this->getActiveVariable($name)->setData($object);
+        $this->variables[$name] = $object;
         if ($this->isAutoSaveWhenSet()) $this->save();
     }
 
@@ -96,21 +69,14 @@ class Receptor {
     }
 
     /**
-     * @param bool $autoSaveWhenSet se true, ele salvará sempre que houver uma alteração pelo método set()
+     * @param bool $autoSaveWhenSet Se true, ele salvará sempre que houver uma alteração pelo método set()
      */
     public function setAutoSaveWhenSet(bool $autoSaveWhenSet): void {
         $this->autoSaveWhenSet = $autoSaveWhenSet;
     }
 
     public function save(): void {
-        $this->getTable()->getDatabase()->getDatabaseType()->save($this->getTable()->getDatabase(), $this);
-    }
-
-    /**
-     * @return Table tabela do receptor
-     */
-    public function getTable(): Table {
-        return $this->table;
+        $this->database->getDatabaseType()->save($this);
     }
 
     /**
