@@ -1,8 +1,8 @@
 <?php
 namespace ItsLaivy\DataAPI\SQLite;
 
-use ItsLaivy\DataAPI\System\Database;
-use ItsLaivy\DataAPI\System\DataResult;
+use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Query\DataResult;
 use SQLite3;
 
 class SQLiteDatabase extends Database {

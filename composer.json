@@ -10,9 +10,6 @@
       "role": "Main Developer"
     }
   ],
-  "config": {
-    "vendor-dir": "src/vendor/"
-  },
   "require": {
     "php": ">=8.1",
     "ext-mysqli": "*",
@@ -20,34 +17,15 @@
   },
   "autoload": {
     "psr-4": {
-      "ItsLaivy\\DataAPI\\": "src/"
-    },
-    "files": [
-      "src/modules/query/DataResult.php",
-      "src/modules/query/DataStatement.php",
+      "ItsLaivy\\DataAPI\\System\\": "src/",
+      "ItsLaivy\\DataAPI\\Query\\": "src/modules/query/",
 
-      "src/modules/Database.php",
-      "src/modules/DatabaseType.php",
+      "ItsLaivy\\DataAPI\\MySQL": "src/modules/sql/mysql/",
+      "ItsLaivy\\DataAPI\\SQLite": "src/modules/sql/sqlite/",
 
-      "src/modules/sql/mysql/MySQLDatabase.php",
-      "src/modules/sql/mysql/MySQLDatabaseType.php",
-      "src/modules/sql/mysql/MySQLResult.php",
-      "src/modules/sql/mysql/MySQLStatement.php",
-
-      "src/modules/sql/sqlite/SQLiteDatabase.php",
-      "src/modules/sql/sqlite/SQLiteDatabaseType.php",
-      "src/modules/sql/sqlite/SQLiteResult.php",
-      "src/modules/sql/sqlite/SQLiteStatement.php",
-
-      "src/modules/variables/ActiveVariable.php",
-      "src/modules/variables/InactiveVariable.php",
-
-      "src/modules/Table.php",
-      "src/modules/Variable.php",
-      "src/modules/Receptor.php",
-
-      "src/ExceptionHandler.php"
-    ]
+      "ItsLaivy\\DataAPI\\ReceptorVariables": "src/modules/variables/",
+      "ItsLaivy\\DataAPI\\Mechanics": "src/modules/"
+    }
   },
   "license": "MIT"
 }

@@ -1,5 +1,7 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI\Query;
+
+use ItsLaivy\DataAPI\Mechanics\Database;
 
 abstract class DataStatement {
 
@@ -9,19 +11,16 @@ abstract class DataStatement {
     /**
      * @param string $query query a ser executado
      */
-    public function __construct(Database $database, string $query)
-    {
+    public function __construct(Database $database, string $query) {
         $this->query = $query;
         $this->database = $database;
     }
 
-    public function getQuery(): string
-    {
+    public function getQuery(): string {
         return $this->query;
     }
 
-    public function getDatabase(): Database
-    {
+    public function getDatabase(): Database {
         return $this->database;
     }
 

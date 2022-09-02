@@ -1,5 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI\ReceptorVariables;
+
+use ItsLaivy\DataAPI\Mechanics\Receptor;
+use function ItsLaivy\DataAPI\System\getVariable;
 
 class InactiveVariable {
 

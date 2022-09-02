@@ -5,15 +5,13 @@
 
 namespace ItsLaivy\DataAPI\SQLite;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
-use ItsLaivy\DataAPI\System\Database;
-use ItsLaivy\DataAPI\System\DatabaseType;
-use ItsLaivy\DataAPI\System\InactiveVariable;
-use ItsLaivy\DataAPI\System\Receptor;
-use ItsLaivy\DataAPI\System\Table;
-use ItsLaivy\DataAPI\System\Variable;
+use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Mechanics\DatabaseType;
+use ItsLaivy\DataAPI\Mechanics\Receptor;
+use ItsLaivy\DataAPI\Mechanics\Table;
 use Exception;
+use ItsLaivy\DataAPI\Mechanics\Variable;
+use ItsLaivy\DataAPI\ReceptorVariables\InactiveVariable;
 use Throwable;
 use function ItsLaivy\DataAPI\System\getAPIDate;
 

@@ -1,7 +1,9 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI\Mechanics;
 
 use Exception;
+use ItsLaivy\DataAPI\ReceptorVariables\ActiveVariable;
+use ItsLaivy\DataAPI\ReceptorVariables\InactiveVariable;
 
 class Receptor {
     private readonly Table $table;

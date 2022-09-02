@@ -1,11 +1,11 @@
 <?php
 namespace ItsLaivy\DataAPI\SQLite;
 
-use ItsLaivy\DataAPI\System\DataResult;
-use ItsLaivy\DataAPI\System\DataStatement;
+use ItsLaivy\DataAPI\Query\DataResult;
+use ItsLaivy\DataAPI\Query\DataStatement;
 use SQLite3Stmt;
 use Throwable;
-use const DataAPI\System\DEBUG;
+use const ItsLaivy\DataAPI\System\DEBUG;
 
 class SQLiteStatement extends DataStatement {
 

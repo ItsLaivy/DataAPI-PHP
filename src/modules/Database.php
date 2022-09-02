@@ -1,8 +1,9 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI\Mechanics;
 
 use Exception;
 use SQLite3;
+use const ItsLaivy\DataAPI\System\EXISTS_ERROR;
 
 abstract class Database {
 

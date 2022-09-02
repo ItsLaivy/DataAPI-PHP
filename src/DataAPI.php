@@ -1,11 +1,12 @@
 <?php
 namespace ItsLaivy\DataAPI\System;
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 use DateTime;
 use DateTimeZone;
 use Exception;
+use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Mechanics\DatabaseType;
+use ItsLaivy\DataAPI\Mechanics\Table;
 
 const DEBUG = false;
 

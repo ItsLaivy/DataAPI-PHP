@@ -1,8 +1,8 @@
 <?php
 namespace ItsLaivy\DataAPI\MySQL;
 
-use ItsLaivy\DataAPI\System\DataResult;
-use ItsLaivy\DataAPI\System\DataStatement;
+use ItsLaivy\DataAPI\Query\DataResult;
+use ItsLaivy\DataAPI\Query\DataStatement;
 use mysqli_stmt;
 use Throwable;
 

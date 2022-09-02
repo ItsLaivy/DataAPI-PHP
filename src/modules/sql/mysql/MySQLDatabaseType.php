@@ -1,16 +1,14 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
 namespace ItsLaivy\DataAPI\MySQL;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
 use Exception;
-use ItsLaivy\DataAPI\System\Database;
-use ItsLaivy\DataAPI\System\DatabaseType;
-use ItsLaivy\DataAPI\System\DataResult;
-use ItsLaivy\DataAPI\System\InactiveVariable;
-use ItsLaivy\DataAPI\System\Receptor;
-use ItsLaivy\DataAPI\System\Table;
-use ItsLaivy\DataAPI\System\Variable;
+use ItsLaivy\DataAPI\Query\DataResult;
+use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Mechanics\DatabaseType;
+use ItsLaivy\DataAPI\Mechanics\Receptor;
+use ItsLaivy\DataAPI\Mechanics\Table;
+use ItsLaivy\DataAPI\Mechanics\Variable;
+use ItsLaivy\DataAPI\ReceptorVariables\InactiveVariable;
 use mysqli;
 use Throwable;
 use function ItsLaivy\DataAPI\System\getAPIDate;

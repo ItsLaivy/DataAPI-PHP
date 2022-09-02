@@ -1,7 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI\Mechanics;
 
 use Exception;
+use const ItsLaivy\DataAPI\System\EXISTS_ERROR;
 
 class Table {
     private readonly Database $database;
