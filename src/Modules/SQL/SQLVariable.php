@@ -11,7 +11,9 @@ class SQLVariable extends Variable {
         parent::__construct($table->getDatabase(), $name, $default, $temporary);
         $this->table = $table;
 
-        $this->table->getVariables()[$name] = $this;
+        $this->load();
+
+        $this->getTable()->getVariables()[$name] = $this;
     }
 
     /**

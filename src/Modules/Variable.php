@@ -13,7 +13,11 @@ abstract class Variable {
         $this->default = $default;
         $this->temporary = $temporary;
 
-        $database->getDatabaseType()->variableLoad($this);
+        // $this->load();
+    }
+
+    protected function load(): void {
+        $this->getDatabase()->getDatabaseType()->variableLoad($this);
     }
 
     public function delete(): void {
