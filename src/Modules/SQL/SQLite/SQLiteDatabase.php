@@ -2,7 +2,6 @@
 namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
 use ItsLaivy\DataAPI\Modules\SQL\SQLDatabase;
-use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use SQLite3;
 
 class SQLiteDatabase extends SQLDatabase {
@@ -10,8 +9,8 @@ class SQLiteDatabase extends SQLDatabase {
     private SQLite3 $connection;
     private bool $conn_opened = false;
 
-    public function __construct(SQLiteDatabaseType $type, SQLTable $table, string $name) {
-        parent::__construct($type, $table, $name);
+    public function __construct(SQLiteDatabaseType $type, string $name) {
+        parent::__construct($type, $name);
     }
 
     public function statement(string $query): SQLiteStatement {

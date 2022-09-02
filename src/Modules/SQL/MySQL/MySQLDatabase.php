@@ -6,8 +6,8 @@ use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 
 class MySQLDatabase extends SQLDatabase {
 
-    public function __construct(MySQLDatabaseType $type, SQLTable $table, string $name) {
-        parent::__construct($type, $table, $name);
+    public function __construct(MySQLDatabaseType $type, string $name) {
+        parent::__construct($type, $name);
     }
 
 }
