@@ -26,18 +26,7 @@ abstract class Receptor {
         $this->name = $name;
         $this->bruteId = $bruteId;
 
-<<<<<<< Updated upstream
-        if (isset($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId])) {
-            throw new exception("Já existe um receptor carregado com esse ID nessa tabela");
-        }
-
-        $_SESSION['dataapi']['inactive_variables'][$bruteId] = array();
-        $_SESSION['dataapi']['active_variables'][$bruteId] = array();
-
-        $this->getTable()->getDatabase()->getDatabaseType()->receptorLoad($this->getTable()->getDatabase(), $this);
-=======
         $this->database->getDatabaseType()->receptorLoad($this);
->>>>>>> Stashed changes
 
         Receptor::$RECEPTORS[$bruteId] = $this;
     }
@@ -45,19 +34,9 @@ abstract class Receptor {
     public function unload(bool $save): void {
         if ($save) $this->save();
     }
-    public function delete() {
+    public function delete(): void {
         $this->unload(false);
-<<<<<<< Updated upstream
-        $this->getTable()->getDatabase()->getDatabaseType()->receptorDelete($this->getTable()->getDatabase(), $this);
-    }
-
-    public function getInactiveVariables() : array {
-        return $_SESSION['dataapi']['inactive_variables'][$this->getBruteId()];
-    } public function getActiveVariables() : array {
-        return $_SESSION['dataapi']['active_variables'][$this->getBruteId()];
-=======
         $this->database->getDatabaseType()->receptorDelete($this);
->>>>>>> Stashed changes
     }
 
     /**
@@ -68,14 +47,14 @@ abstract class Receptor {
     }
 
     /**
-     * @throws exception caso a variável não seja encontrada
+     * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
         return $this->variables[$name];
     }
 
     /**
-     * @throws exception caso a variável não seja encontrada
+     * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
         $this->variables[$name] = $object;
@@ -90,25 +69,14 @@ abstract class Receptor {
     }
 
     /**
-     * @param bool $autoSaveWhenSet se true, ele salvará sempre que houver uma alteração pelo método set()
+     * @param bool $autoSaveWhenSet Se true, ele salvará sempre que houver uma alteração pelo método set()
      */
     public function setAutoSaveWhenSet(bool $autoSaveWhenSet): void {
         $this->autoSaveWhenSet = $autoSaveWhenSet;
     }
 
     public function save(): void {
-<<<<<<< Updated upstream
-        $this->getTable()->getDatabase()->getDatabaseType()->save($this->getTable()->getDatabase(), $this);
-    }
-
-    /**
-     * @return Table tabela do receptor
-     */
-    public function getTable(): Table {
-        return $this->table;
-=======
         $this->database->getDatabaseType()->save($this);
->>>>>>> Stashed changes
     }
 
     /**

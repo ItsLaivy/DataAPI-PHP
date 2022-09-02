@@ -18,16 +18,7 @@ class SQLTable {
         $this->database = $database;
         $this->name = $name;
 
-<<<<<<< Updated upstream:src/Modules/Table.php
-        if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
-            if (EXISTS_ERROR) throw new exception("Já existe uma tabela carregada com esse nome nesse banco de dados");
-            return;
-        }
-
-        $this->database->getDatabaseType()->tableLoad($database, $this);
-=======
         $this->database->getDatabaseType()->tableLoad($this);
->>>>>>> Stashed changes:src/Modules/SQL/SQLTable.php
 
         $this->receptors = array();
         $this->variables = array();
@@ -66,7 +57,7 @@ class SQLTable {
             $variable->delete();
         }
 
-        $this->database->getDatabaseType()->tableDelete($this->database, $this);
+        $this->database->getDatabaseType()->tableDelete($this);
     }
 
     /**

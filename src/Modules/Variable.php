@@ -1,45 +1,24 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules;
 
-use Exception;
-use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
-
-class Variable {
+abstract class Variable {
     private readonly string $name;
-    private readonly SQLTable $table;
+    private readonly Database $database;
     private readonly mixed $default;
     private readonly bool $temporary;
 
-<<<<<<< Updated upstream
-    public function __construct(string $name, Table $table, mixed $default, bool $temporary) {
-=======
-    /**
-     * @throws Exception
-     */
-    public function __construct(string $name, SQLTable $table, mixed $default, bool $temporary) {
->>>>>>> Stashed changes
+    public function __construct(Database $database, string $name, mixed $default, bool $temporary) {
         $this->name = $name;
-        $this->table = $table;
+        $this->database = $database;
         $this->default = $default;
         $this->temporary = $temporary;
 
-<<<<<<< Updated upstream
-        if (isset($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name])) {
-            if (EXISTS_ERROR) throw new exception("Já existe uma variável carregada com esse nome nessa tabela");
-            return;
-        }
-
-        $table->getDatabase()->getDatabaseType()->variableLoad($table->getDatabase(), $this);
-=======
-        $table->getDatabase()->getDatabaseType()->variableLoad($this);
->>>>>>> Stashed changes
-
-        $this->table->getVariables()[$name] = $this;
+        $database->getDatabaseType()->variableLoad($this);
     }
 
     public function delete(): void {
-        unset($_SESSION['dataapi']['Variables'][$this->getTable()->getIdentification()][$this->getName()]);
-        $this->getTable()->getDatabase()->getDatabaseType()->variableDelete($this->getTable()->getDatabase(), $this);
+        unset($_SESSION['dataapi']['Variables'][$this->database->getIdentification()][$this->getName()]);
+        $this->database->getDatabaseType()->variableDelete($this);
     }
 
     /**
@@ -50,10 +29,10 @@ class Variable {
     }
 
     /**
-     * @return SQLTable a tabela da variável
+     * @return Database
      */
-    public function getTable(): SQLTable {
-        return $this->table;
+    public function getDatabase(): Database {
+        return $this->database;
     }
 
     /**

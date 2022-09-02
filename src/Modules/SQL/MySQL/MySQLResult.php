@@ -33,5 +33,3 @@ class MySQLResult extends DataResult {
     }
 
 }
-
-?>

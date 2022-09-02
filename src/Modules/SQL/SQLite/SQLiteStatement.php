@@ -4,7 +4,6 @@ namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 use ItsLaivy\DataAPI\Modules\Query\DataStatement;
 use SQLite3Stmt;
 use Throwable;
-use const ItsLaivy\DataAPI\DEBUG;
 
 class SQLiteStatement extends DataStatement {
 
@@ -27,7 +26,6 @@ class SQLiteStatement extends DataStatement {
 
     public function execute(): SQLiteResult {
         if (!isset($this->statement)) {
-            if (DEBUG) echo "Não foi possível executar o statement do SQLite, pois o statement não foi criado com sucesso<br>";
             return new SQLiteResult(null);
         }
 
@@ -41,7 +39,6 @@ class SQLiteStatement extends DataStatement {
 
     public function close(): void {
         if (!isset($this->statement)) {
-            if (DEBUG) echo "Não foi possível executar o statement do SQLite, pois o statement não foi criado com sucesso<br>";
             return;
         }
 
@@ -54,7 +51,6 @@ class SQLiteStatement extends DataStatement {
 
     public function bindParameters(string $param, mixed $var): void {
         if (!isset($this->statement)) {
-            if (DEBUG) echo "Não foi possível realizar isso, pois o statement não foi criado com sucesso<br>";
             return;
         }
 
@@ -66,5 +62,3 @@ class SQLiteStatement extends DataStatement {
     }
 
 }
-
-?>

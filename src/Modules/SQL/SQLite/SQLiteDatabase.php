@@ -1,7 +1,6 @@
 <?php
 namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
-use ItsLaivy\DataAPI\Modules\Query\DataResult;
 use ItsLaivy\DataAPI\Modules\SQL\SQLDatabase;
 use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use SQLite3;
@@ -18,7 +17,7 @@ class SQLiteDatabase extends SQLDatabase {
     public function statement(string $query): SQLiteStatement {
         return new SQLiteStatement($this, $query);
     }
-    public function query(string $query): DataResult {
+    public function query(string $query): SQLiteResult {
         $stmt = $this->statement($query);
         return $stmt->execute();
     }
@@ -51,5 +50,3 @@ class SQLiteDatabase extends SQLDatabase {
         }
     }
 }
-
-?>
