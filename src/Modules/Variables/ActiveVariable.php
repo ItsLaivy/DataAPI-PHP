@@ -1,8 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\ReceptorVariables;
+namespace ItsLaivy\DataAPI\Modules\Variables;
 
-use ItsLaivy\DataAPI\Mechanics\Receptor;
-use ItsLaivy\DataAPI\Mechanics\Variable;
+use ItsLaivy\DataAPI\Modules\Receptor;
+use ItsLaivy\DataAPI\Modules\Variable;
 
 class ActiveVariable {
 

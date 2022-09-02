@@ -1,7 +1,7 @@
 <?php
-namespace ItsLaivy\DataAPI\Query;
+namespace ItsLaivy\DataAPI\Modules\Query;
 
-use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Modules\Database;
 
 abstract class DataStatement {
 

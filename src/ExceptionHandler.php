@@ -1,5 +1,5 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI;
 
 use JetBrains\PhpStorm\NoReturn;
 use Throwable;

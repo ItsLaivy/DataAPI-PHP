@@ -1,8 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\ReceptorVariables;
+namespace ItsLaivy\DataAPI\Modules\Variables;
 
-use ItsLaivy\DataAPI\Mechanics\Receptor;
-use function ItsLaivy\DataAPI\System\getVariable;
+use ItsLaivy\DataAPI\Modules\Receptor;
+use function ItsLaivy\DataAPI\getVariable;
 
 class InactiveVariable {
 
@@ -20,7 +20,7 @@ class InactiveVariable {
             return;
         }
 
-        if (isset($_SESSION['dataapi']['variables'][$receptor->getTable()->getIdentification()][$name])) {
+        if (isset($_SESSION['dataapi']['Variables'][$receptor->getTable()->getIdentification()][$name])) {
             $var = getVariable($receptor->getTable(), $name);
             new ActiveVariable($receptor, $var, $this->data);
         } else {

@@ -1,17 +1,17 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
-namespace ItsLaivy\DataAPI\MySQL;
+namespace ItsLaivy\DataAPI\Modules\SQL\MySQL;
 
 use Exception;
-use ItsLaivy\DataAPI\Query\DataResult;
-use ItsLaivy\DataAPI\Mechanics\Database;
-use ItsLaivy\DataAPI\Mechanics\DatabaseType;
-use ItsLaivy\DataAPI\Mechanics\Receptor;
-use ItsLaivy\DataAPI\Mechanics\Table;
-use ItsLaivy\DataAPI\Mechanics\Variable;
-use ItsLaivy\DataAPI\ReceptorVariables\InactiveVariable;
+use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\DatabaseType;
+use ItsLaivy\DataAPI\Modules\Query\DataResult;
+use ItsLaivy\DataAPI\Modules\Receptor;
+use ItsLaivy\DataAPI\Modules\Table;
+use ItsLaivy\DataAPI\Modules\Variable;
+use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 use mysqli;
 use Throwable;
-use function ItsLaivy\DataAPI\System\getAPIDate;
+use function ItsLaivy\DataAPI\getAPIDate;
 
 class MySQLDatabaseType extends DatabaseType {
 

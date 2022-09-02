@@ -1,11 +1,10 @@
 <?php
-namespace ItsLaivy\DataAPI\SQLite;
+namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
-use ItsLaivy\DataAPI\Query\DataResult;
-use ItsLaivy\DataAPI\Query\DataStatement;
+use ItsLaivy\DataAPI\Modules\Query\DataStatement;
 use SQLite3Stmt;
 use Throwable;
-use const ItsLaivy\DataAPI\System\DEBUG;
+use const ItsLaivy\DataAPI\DEBUG;
 
 class SQLiteStatement extends DataStatement {
 
@@ -26,7 +25,7 @@ class SQLiteStatement extends DataStatement {
         }
     }
 
-    public function execute(): DataResult {
+    public function execute(): SQLiteResult {
         if (!isset($this->statement)) {
             if (DEBUG) echo "Não foi possível executar o statement do SQLite, pois o statement não foi criado com sucesso<br>";
             return new SQLiteResult(null);

@@ -1,8 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\Mechanics;
+namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
-use const ItsLaivy\DataAPI\System\EXISTS_ERROR;
+use const ItsLaivy\DataAPI\EXISTS_ERROR;
 
 class Variable {
     private readonly string $name;
@@ -16,19 +16,19 @@ class Variable {
         $this->default = $default;
         $this->temporary = $temporary;
 
-        if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
+        if (isset($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name])) {
             if (EXISTS_ERROR) throw new exception("Já existe uma variável carregada com esse nome nessa tabela");
             return;
         }
 
         $table->getDatabase()->getDatabaseType()->variableLoad($table->getDatabase(), $this);
 
-        $_SESSION['dataapi']['variables'][$table->getIdentification()][$name] = serialize($this);
-        $_SESSION['dataapi']['log']['created']['variables'] += 1;
+        $_SESSION['dataapi']['Variables'][$table->getIdentification()][$name] = serialize($this);
+        $_SESSION['dataapi']['log']['created']['Variables'] += 1;
     }
 
     public function delete(): void {
-        unset($_SESSION['dataapi']['variables'][$this->getTable()->getIdentification()][$this->getName()]);
+        unset($_SESSION['dataapi']['Variables'][$this->getTable()->getIdentification()][$this->getName()]);
         $this->getTable()->getDatabase()->getDatabaseType()->variableDelete($this->getTable()->getDatabase(), $this);
     }
 

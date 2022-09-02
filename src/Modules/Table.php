@@ -1,8 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\Mechanics;
+namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
-use const ItsLaivy\DataAPI\System\EXISTS_ERROR;
+use const ItsLaivy\DataAPI\EXISTS_ERROR;
 
 class Table {
     private readonly Database $database;
@@ -40,7 +40,7 @@ class Table {
         foreach ($this->getReceptors() as $name => $receptor) {
             $receptor->unload(false);
         }
-        // Unload variables
+        // Unload Variables
         foreach ($this->getVariables() as $name => $variable) {
             $variable->delete();
         }
@@ -53,7 +53,7 @@ class Table {
     }
     public function getVariables(): array {
         $vars = array();
-        foreach ($_SESSION['dataapi']['variables'][$this->getIdentification()] as $name => $variable) {
+        foreach ($_SESSION['dataapi']['Variables'][$this->getIdentification()] as $name => $variable) {
             $vars[] = $variable;
         }
         return $vars;

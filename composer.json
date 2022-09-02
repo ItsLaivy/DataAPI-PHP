@@ -17,14 +17,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ItsLaivy\\DataAPI\\System\\": "src/",
-      "ItsLaivy\\DataAPI\\Query\\": "src/modules/query/",
-
-      "ItsLaivy\\DataAPI\\MySQL": "src/modules/sql/mysql/",
-      "ItsLaivy\\DataAPI\\SQLite": "src/modules/sql/sqlite/",
-
-      "ItsLaivy\\DataAPI\\ReceptorVariables": "src/modules/variables/",
-      "ItsLaivy\\DataAPI\\Mechanics": "src/modules/"
+      "ItsLaivy\\DataAPI\\": "src/"
     }
   },
   "license": "MIT"

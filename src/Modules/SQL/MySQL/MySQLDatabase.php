@@ -1,7 +1,7 @@
 <?php
-namespace ItsLaivy\DataAPI\MySQL;
+namespace ItsLaivy\DataAPI\Modules\SQL\MySQL;
 
-use ItsLaivy\DataAPI\Mechanics\Database;
+use ItsLaivy\DataAPI\Modules\Database;
 
 class MySQLDatabase extends Database {
 

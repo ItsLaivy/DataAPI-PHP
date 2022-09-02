@@ -3,17 +3,17 @@
 /** @noinspection SqlDialectInspection */
 /** @noinspection SqlNoDataSourceInspection */
 
-namespace ItsLaivy\DataAPI\SQLite;
+namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
-use ItsLaivy\DataAPI\Mechanics\Database;
-use ItsLaivy\DataAPI\Mechanics\DatabaseType;
-use ItsLaivy\DataAPI\Mechanics\Receptor;
-use ItsLaivy\DataAPI\Mechanics\Table;
+use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\DatabaseType;
+use ItsLaivy\DataAPI\Modules\Receptor;
+use ItsLaivy\DataAPI\Modules\Table;
 use Exception;
-use ItsLaivy\DataAPI\Mechanics\Variable;
-use ItsLaivy\DataAPI\ReceptorVariables\InactiveVariable;
+use ItsLaivy\DataAPI\Modules\Variable;
+use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 use Throwable;
-use function ItsLaivy\DataAPI\System\getAPIDate;
+use function ItsLaivy\DataAPI\getAPIDate;
 
 class SQLiteDatabaseType extends DatabaseType {
 

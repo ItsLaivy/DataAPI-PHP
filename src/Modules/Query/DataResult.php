@@ -1,5 +1,5 @@
 <?php
-namespace ItsLaivy\DataAPI\Query;
+namespace ItsLaivy\DataAPI\Modules\Query;
 
 abstract class DataResult {
 

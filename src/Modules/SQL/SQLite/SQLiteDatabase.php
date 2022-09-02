@@ -1,8 +1,8 @@
 <?php
-namespace ItsLaivy\DataAPI\SQLite;
+namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
-use ItsLaivy\DataAPI\Mechanics\Database;
-use ItsLaivy\DataAPI\Query\DataResult;
+use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\Query\DataResult;
 use SQLite3;
 
 class SQLiteDatabase extends Database {
@@ -20,8 +20,7 @@ class SQLiteDatabase extends Database {
     }
     public function query(string $query): DataResult {
         $stmt = $this->statement($query);
-        $result = $stmt->execute();
-        return $result;
+        return $stmt->execute();
     }
 
     public function getFileName(): string {

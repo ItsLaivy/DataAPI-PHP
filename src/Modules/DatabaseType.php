@@ -1,9 +1,9 @@
 <?php
-namespace ItsLaivy\DataAPI\Mechanics;
+namespace ItsLaivy\DataAPI\Modules;
 
 use Exception;
 use Throwable;
-use const ItsLaivy\DataAPI\System\DEBUG;
+use const ItsLaivy\DataAPI\DEBUG;
 
 abstract class DatabaseType {
 

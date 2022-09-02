@@ -1,12 +1,12 @@
 <?php
-namespace ItsLaivy\DataAPI\System;
+namespace ItsLaivy\DataAPI;
 
 use DateTime;
 use DateTimeZone;
 use Exception;
-use ItsLaivy\DataAPI\Mechanics\Database;
-use ItsLaivy\DataAPI\Mechanics\DatabaseType;
-use ItsLaivy\DataAPI\Mechanics\Table;
+use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\DatabaseType;
+use ItsLaivy\DataAPI\Modules\Table;
 
 const DEBUG = false;
 
@@ -29,7 +29,7 @@ if (!isset($_SESSION['dataapi'])) {
      */
     $_SESSION['dataapi']['databases'] = array(); // NOME DO TIPO DO BANCO (DatabaseType#getName()) - BANCO DE DADOS
     $_SESSION['dataapi']['tables'] = array(); // BANCO DE DADOS - TABELA
-    $_SESSION['dataapi']['variables'] = array(); // TABELA - VARIÁVEL
+    $_SESSION['dataapi']['Variables'] = array(); // TABELA - VARIÁVEL
     $_SESSION['dataapi']['receptors'] = array(); // TABELA - RECEPTOR
 
     /**
@@ -57,7 +57,7 @@ if (!isset($_SESSION['dataapi'])) {
     $_SESSION['dataapi']['log']['created'] = array();
     $_SESSION['dataapi']['log']['created']['databases'] = 0;
     $_SESSION['dataapi']['log']['created']['tables'] = 0;
-    $_SESSION['dataapi']['log']['created']['variables'] = 0;
+    $_SESSION['dataapi']['log']['created']['Variables'] = 0;
     $_SESSION['dataapi']['log']['created']['receptors'] = 0;
 
     $_SESSION['dataapi']['log']['created']['inactive_variables'] = 0;
@@ -65,7 +65,7 @@ if (!isset($_SESSION['dataapi'])) {
 }
 
 /**
- * @throws exception se nenhum banco de dados com as informações for encontrado
+ * @throws exception Se nenhum banco de dados com as informações for encontrado
  */
 function getDatabase(DatabaseType $type, string $name) {
     if (isset($_SESSION['dataapi']['databases'][$type->getName()][$name])) {
@@ -74,7 +74,7 @@ function getDatabase(DatabaseType $type, string $name) {
     throw new exception("Não foi possível encontrar nenhum banco de dados do tipo '". $type->getName() ."' de nome '". $name ."'");
 }
 /**
- * @throws exception se nenhuma tabela com as informações for encontrado
+ * @throws exception Se nenhuma tabela com as informações for encontrado
  */
 function getTable(Database $database, string $name) {
     if (isset($_SESSION['dataapi']['tables'][$database->getIdentification()][$name])) {
@@ -83,7 +83,7 @@ function getTable(Database $database, string $name) {
     throw new exception("Não foi possível encontrar nenhuma tabela no banco de dados '". $database->getName() ." ('". $database->getDatabaseType()->getName() ."')' de nome '". $name ."'");
 }
 /**
- * @throws exception se nenhum receptor com as informações for encontrado
+ * @throws exception Se nenhum receptor com as informações for encontrado
  */
 function getReceptor(Table $table, string $bruteId) {
     if (isset($_SESSION['dataapi']['receptors'][$table->getIdentification()][$bruteId])) {
@@ -92,11 +92,11 @@ function getReceptor(Table $table, string $bruteId) {
     throw new exception("Não foi possível encontrar nenhum receptor na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de ID '". $bruteId ."'");
 }
 /**
- * @throws exception se nenhum receptor com as informações for encontrado
+ * @throws exception Se nenhum receptor com as informações for encontrado
  */
 function getVariable(Table $table, string $name) {
-    if (isset($_SESSION['dataapi']['variables'][$table->getIdentification()][$name])) {
-        return unserialize($_SESSION['dataapi']['variables'][$table->getIdentification()][$name]);
+    if (isset($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name])) {
+        return unserialize($_SESSION['dataapi']['Variables'][$table->getIdentification()][$name]);
     }
     throw new exception("Não foi possível encontrar nenhuma variável na tabela '". $table->getName() ." ('". $table->getDatabase()->getName() ."')' de nome '". $name ."'");
 }
