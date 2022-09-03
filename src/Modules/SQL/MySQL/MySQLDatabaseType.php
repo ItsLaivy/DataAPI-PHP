@@ -11,6 +11,7 @@ use ItsLaivy\DataAPI\Modules\SQL\SQLReceptor;
 use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use ItsLaivy\DataAPI\Modules\SQL\SQLVariable;
 use ItsLaivy\DataAPI\Modules\Variable;
+use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 use mysqli;
 use Throwable;
 
@@ -122,35 +123,9 @@ class MySQLDatabaseType extends SQLDatabaseType {
         foreach ($assoc as $key => $value) {
             if ($row == 0) $receptor->setId($value); // ID
 
-            // If the unserialize method cannot be performed it will use the string value
-            set_error_handler(function($errno, $errstr, $errfile, $errline){
-                if($errno === E_WARNING){
-                    trigger_error($errstr, E_ERROR);
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            //
-
             if ($row > 3) {
-                echo "Table: '".$receptor->getTable()->getName()."'<br>";
-                echo "Old: '".count($receptor->getVariables())."'<br>";
-                try {
-                    $unserialized = @unserialize($value);
-                    $receptor->getVariables()[$key] = $unserialized;
-                    echo "1 - '".$key."'";
-                } catch (exception) {
-                    $receptor->getVariables()[$key] = $value;
-                    echo "2 - '".$key."'";
-                }
-                echo "New: '".count($receptor->getVariables())."'<br>";
-                echo "--------------<br>";
+                new InactiveVariable($receptor, $key, $value);
             }
-
-            // Return to the old handler
-            restore_error_handler();
-            //
 
             $row++;
         }
@@ -168,20 +143,12 @@ class MySQLDatabaseType extends SQLDatabaseType {
      */
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
-        foreach ($receptor->getVariables() as $key => $value) {
-            if (!array_key_exists($key, Variable::$VARIABLES)) {
-                throw new exception("Cannot save variable '".$key."' because the instance of this variable cannot be found.");
-            } $var = Variable::$VARIABLES[$key];
-
-            if (!$var->isSerialize() && !method_exists($value, "__toString")) {
-                throw new exception("Cannot save variable '".$key."' because the variable isn't serializable and value cannot be converted as a string!");
-            }
-
-            $query = $query . "`" . $key . "`='" . ($var->isSerialize() ? serialize($value) : $value->__toString()) . "',";
+        foreach ($receptor->getActiveVariables() as $variable) {
+            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getaData())."',";
         }
-        $query = $query . "`last_update`='" . parent::getAPIDate() . "'";
+        $query = $query . "`last_update`='".self::getAPIDate()."'";
 
-        $this->query($receptor->getTable()->getDatabase(), "UPDATE " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " SET " . $query . " WHERE bruteid = '" . $receptor->getBruteId() . "'");
+        $this->query($receptor->getTable()->getDatabase(), "UPDATE ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
 
     /**

@@ -15,7 +15,9 @@ abstract class Receptor {
     protected bool $new = false;
 
     protected bool $autoSaveWhenSet = false;
-    protected array $variables = array();
+
+    protected array $activeVariables = array();
+    protected array $inactiveVariables = array();
 
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado
@@ -39,33 +41,31 @@ abstract class Receptor {
     }
 
     /**
-     * @return array
+     * @return array The active variables array
      */
-    public function getVariables(): array {
-        return $this->variables;
+    public function getActiveVariables(): array {
+        return $this->activeVariables;
+    }
+
+    /**
+     * @return array The inactive variables array
+     */
+    public function getInactiveVariables(): array {
+        return $this->inactiveVariables;
     }
 
     /**
      * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
-        return $this->variables[$name];
+        return $this->getActiveVariables()[$name];
     }
 
     /**
      * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
-        if (!array_key_exists($name, Variable::$VARIABLES)) {
-            throw new exception("Cannot found variable '".$name."'");
-        }
-
-        $var = Variable::$VARIABLES[$name];
-        if (!$var->isSerialize() && !method_exists($object, "__toString")) {
-            throw new exception("Cannot set variable '".$name."' from receptor '".$this->getBruteId()."' because the variable isn't serializable and value cannot be converted as a string!");
-        }
-
-        $this->variables[$name] = $object;
+        $this->getActiveVariables()[$name]->setData($object);
         if ($this->isAutoSaveWhenSet()) $this->save();
     }
 
