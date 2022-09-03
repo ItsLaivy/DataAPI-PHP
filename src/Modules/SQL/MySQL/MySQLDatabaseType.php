@@ -1,6 +1,7 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
 namespace ItsLaivy\DataAPI\Modules\SQL\MySQL;
 
+use Error;
 use Exception;
 use ItsLaivy\DataAPI\Modules\Database;
 use ItsLaivy\DataAPI\Modules\Query\DataResult;
@@ -10,6 +11,7 @@ use ItsLaivy\DataAPI\Modules\SQL\SQLReceptor;
 use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
 use ItsLaivy\DataAPI\Modules\SQL\SQLVariable;
 use ItsLaivy\DataAPI\Modules\Variable;
+use ItsLaivy\DataAPI\Modules\Variables\InactiveVariable;
 use mysqli;
 use Throwable;
 
@@ -122,8 +124,9 @@ class MySQLDatabaseType extends SQLDatabaseType {
             if ($row == 0) $receptor->setId($value); // ID
 
             if ($row > 3) {
-                $receptor->getVariables()[$key] = unserialize($value);
+                new InactiveVariable($receptor, $key, $value);
             }
+
             $row++;
         }
     }
@@ -140,12 +143,12 @@ class MySQLDatabaseType extends SQLDatabaseType {
      */
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
-        foreach ($receptor->getVariables() as $key => $value) {
-            $query = $query . "`" . $key . "`='" . serialize($value) . "',";
+        foreach ($receptor->getActiveVariables() as $variable) {
+            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
         }
-        $query = $query . "`last_update`='" . parent::getAPIDate() . "'";
+        $query = $query . "`last_update`='".self::getAPIDate()."'";
 
-        $this->query($receptor->getTable()->getDatabase(), "UPDATE " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " SET " . $query . " WHERE bruteid = '" . $receptor->getBruteId() . "'");
+        $this->query($receptor->getTable()->getDatabase(), "UPDATE ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
 
     /**
@@ -164,7 +167,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
     }
 
     public function variableLoad(SQLVariable|Variable $variable): void {
-        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " ADD COLUMN " . $variable->getName() . " MEDIUMTEXT DEFAULT '" . serialize($variable->getDefault()) . "';");
+        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " ADD COLUMN " . $variable->getName() . " MEDIUMTEXT DEFAULT '" . ($variable->isSerialize() ? serialize($variable->getDefault()) : strval($variable->getDefault())) . "';");
     }
 
     public function variableDelete(SQLVariable|Variable $variable): void {

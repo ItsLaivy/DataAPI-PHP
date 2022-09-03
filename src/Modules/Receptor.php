@@ -11,12 +11,13 @@ abstract class Receptor {
     private readonly string $name;
     private readonly string $bruteId;
 
-    private int $id;
-    private bool $new = false;
+    protected int $id;
+    protected bool $new = false;
 
-    private bool $autoSaveWhenSet = false;
+    protected bool $autoSaveWhenSet = false;
 
-    private array $variables = array();
+    public array $activeVariables = array();
+    public array $inactiveVariables = array();
 
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado
@@ -40,24 +41,31 @@ abstract class Receptor {
     }
 
     /**
-     * @return array
+     * @return array The active variables array
      */
-    public function getVariables(): array {
-        return $this->variables;
+    public function &getActiveVariables(): array {
+        return $this->activeVariables;
+    }
+
+    /**
+     * @return array The inactive variables array
+     */
+    public function &getInactiveVariables(): array {
+        return $this->inactiveVariables;
     }
 
     /**
      * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
-        return $this->variables[$name];
+        return $this->getActiveVariables()[$name]->getData();
     }
 
     /**
      * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
-        $this->variables[$name] = $object;
+        $this->getActiveVariables()[$name]->setData($object);
         if ($this->isAutoSaveWhenSet()) $this->save();
     }
 

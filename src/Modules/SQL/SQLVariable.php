@@ -7,11 +7,9 @@ class SQLVariable extends Variable {
 
     private readonly SQLTable $table;
 
-    public function __construct(SQLTable $table, string $name, mixed $default, bool $temporary) {
-        parent::__construct($table->getDatabase(), $name, $default, $temporary);
+    public function __construct(SQLTable $table, string $name, mixed $default, bool $serialize = true, bool $temporary = false) {
         $this->table = $table;
-
-        $this->load();
+        parent::__construct($table->getDatabase(), $name, $default, $serialize, $temporary);
 
         $this->getTable()->getVariables()[$name] = $this;
     }
