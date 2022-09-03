@@ -76,7 +76,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
 
             if ($row > 3) {
                 try {
-                    $unserialized = unserialize($value);
+                    $unserialized = @unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
                 } catch (exception) {
                     $receptor->getVariables()[$key] = $value;
