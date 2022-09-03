@@ -139,8 +139,10 @@ class MySQLDatabaseType extends SQLDatabaseType {
                 try {
                     $unserialized = @unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
+                    echo "1 - '".$key."'";
                 } catch (exception) {
                     $receptor->getVariables()[$key] = $value;
+                    echo "2 - '".$key."'";
                 }
                 echo "New: '".count($receptor->getVariables())."'<br>";
                 echo "--------------<br>";
