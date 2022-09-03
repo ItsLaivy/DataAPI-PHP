@@ -134,12 +134,14 @@ class MySQLDatabaseType extends SQLDatabaseType {
             //
 
             if ($row > 3) {
+                echo "Old: '".count($receptor->getVariables())."'<br>";
                 try {
                     $unserialized = @unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
                 } catch (exception) {
                     $receptor->getVariables()[$key] = $value;
                 }
+                echo "New: '".count($receptor->getVariables())."'<br>";
             }
 
             // Return to the old handler
