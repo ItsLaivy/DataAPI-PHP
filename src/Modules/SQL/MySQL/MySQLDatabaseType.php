@@ -122,11 +122,23 @@ class MySQLDatabaseType extends SQLDatabaseType {
             if ($row == 0) $receptor->setId($value); // ID
 
             if ($row > 3) {
-                $unserialized = unserialize($value);
-                if ($unserialized !== false) {
+                set_error_handler(function($errno, $errstr, $errfile, $errline){
+                    if($errno === E_WARNING){
+                        trigger_error($errstr, E_ERROR);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+
+                try {
+                    $unserialized = unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
-                } else {
+                } catch (exception $e) {
+                    echo $e;
                     $receptor->getVariables()[$key] = $value;
+                } finally {
+                    restore_error_handler();
                 }
             }
             $row++;
