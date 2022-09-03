@@ -18,7 +18,7 @@ class ActiveVariable {
         $this->receptor = $receptor;
 
         echo "<br>Count ¹: '".count($receptor->getActiveVariables())."'<br>";
-        $receptor->getActiveVariables()[$variable->getName()] = $this;
+        $receptor->activeVariables[$variable->getName()] = $this;
         echo "Count ²: '".count($receptor->getActiveVariables())."'<br>";
     }
 

@@ -16,8 +16,8 @@ abstract class Receptor {
 
     protected bool $autoSaveWhenSet = false;
 
-    protected array $activeVariables = array();
-    protected array $inactiveVariables = array();
+    public array $activeVariables = array();
+    public array $inactiveVariables = array();
 
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado
