@@ -58,7 +58,7 @@ abstract class Receptor {
      * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
-        return $this->getActiveVariables()[$name];
+        return $this->getActiveVariables()[$name]->getData();
     }
 
     /**
