@@ -124,6 +124,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
             if ($row == 0) $receptor->setId($value); // ID
 
             if ($row > 3) {
+                echo "'" . $key . "':'" . $value . "'";
                 new InactiveVariable($receptor, $key, $value);
             }
 
