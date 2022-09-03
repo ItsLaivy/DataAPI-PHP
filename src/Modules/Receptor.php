@@ -11,12 +11,11 @@ abstract class Receptor {
     private readonly string $name;
     private readonly string $bruteId;
 
-    private int $id;
-    private bool $new = false;
+    protected int $id;
+    protected bool $new = false;
 
-    private bool $autoSaveWhenSet = false;
-
-    private array $variables = array();
+    protected bool $autoSaveWhenSet = false;
+    protected array $variables = array();
 
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado

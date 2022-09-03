@@ -1,6 +1,7 @@
 <?php /** @noinspection SqlNoDataSourceInspection */
 namespace ItsLaivy\DataAPI\Modules\SQL\MySQL;
 
+use Error;
 use Exception;
 use ItsLaivy\DataAPI\Modules\Database;
 use ItsLaivy\DataAPI\Modules\Query\DataResult;
@@ -136,7 +137,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
                 try {
                     $unserialized = unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
-                } catch (exception) {
+                } catch (error) {
                     $receptor->getVariables()[$key] = $value;
                 }
             }
