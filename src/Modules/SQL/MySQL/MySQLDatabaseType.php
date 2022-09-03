@@ -134,6 +134,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
             //
 
             if ($row > 3) {
+                echo "Table: '".$receptor->getTable()->getName()."'<br>";
                 echo "Old: '".count($receptor->getVariables())."'<br>";
                 try {
                     $unserialized = @unserialize($value);
@@ -142,6 +143,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
                     $receptor->getVariables()[$key] = $value;
                 }
                 echo "New: '".count($receptor->getVariables())."'<br>";
+                echo "--------------<br>";
             }
 
             // Return to the old handler
