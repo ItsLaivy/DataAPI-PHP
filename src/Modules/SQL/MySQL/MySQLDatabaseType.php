@@ -137,9 +137,12 @@ class MySQLDatabaseType extends SQLDatabaseType {
                 try {
                     $unserialized = unserialize($value);
                     $receptor->getVariables()[$key] = $unserialized;
+                    echo "defined 1 '".$key."'";
                 } catch (error) {
+                    echo "defined 2 '".$key."'";
                     $receptor->getVariables()[$key] = $value;
                 }
+                echo "<br>";
             }
 
             // Return to the old handler
