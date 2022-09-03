@@ -16,8 +16,8 @@ abstract class Receptor {
 
     protected bool $autoSaveWhenSet = false;
 
-    public array $activeVariables = array();
-    public array $inactiveVariables = array();
+    public array $activeVariables;
+    public array $inactiveVariables;
 
     /**
      * @throws exception caso já haja um receptor criado com o bruteId informado
@@ -27,6 +27,9 @@ abstract class Receptor {
         $this->name = $name;
         $this->bruteId = $bruteId;
 
+        $this->activeVariables = array();
+        $this->inactiveVariables = array();
+        
         $this->database->getDatabaseType()->receptorLoad($this);
 
         Receptor::$RECEPTORS[$bruteId] = $this;
