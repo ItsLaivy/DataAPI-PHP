@@ -144,7 +144,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
         foreach ($receptor->getActiveVariables() as $variable) {
-            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getaData())."',";
+            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
         }
         $query = $query . "`last_update`='".self::getAPIDate()."'";
 
