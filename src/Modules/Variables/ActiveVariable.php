@@ -17,7 +17,9 @@ class ActiveVariable {
         $this->data = $variable->isSerialize() ? unserialize($data) : $data;
         $this->receptor = $receptor;
 
+        echo "<br>Count ¹: '".count($receptor->getActiveVariables())."'<br>";
         $receptor->getActiveVariables()[$variable->getName()] = $this;
+        echo "Count ²: '".count($receptor->getActiveVariables())."'<br>";
     }
 
     /**

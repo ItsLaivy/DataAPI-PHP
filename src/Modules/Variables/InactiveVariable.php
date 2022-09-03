@@ -20,8 +20,6 @@ class InactiveVariable {
             return;
         }
 
-        var_dump(array_key_exists($name, Variable::$VARIABLES));
-
         if (array_key_exists($name, Variable::$VARIABLES)) {
             new ActiveVariable($receptor, Variable::$VARIABLES[$name], $this->data);
         } else {
