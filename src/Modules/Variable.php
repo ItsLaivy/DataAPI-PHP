@@ -31,7 +31,7 @@ abstract class Variable {
             throw new exception("To use the serialize = false option, the default value object needs to implement the __toString");
         }
 
-        // $this->load();
+        $this->load();
 
         self::$VARIABLES[$name] = $this;
     }

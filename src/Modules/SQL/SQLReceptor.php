@@ -8,8 +8,8 @@ class SQLReceptor extends Receptor {
     private readonly SQLTable $table;
 
     public function __construct(SQLTable $table, string $name, string $bruteId) {
-        parent::__construct($table->getDatabase(), $name, $bruteId);
         $this->table = $table;
+        parent::__construct($table->getDatabase(), $name, $bruteId);
     }
 
     /**
