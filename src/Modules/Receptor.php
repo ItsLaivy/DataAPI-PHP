@@ -57,6 +57,15 @@ abstract class Receptor {
      * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
+        if (!array_key_exists($name, Variable::$VARIABLES)) {
+            throw new exception("Cannot found variable '".$name."'");
+        }
+
+        $var = Variable::$VARIABLES[$name];
+        if (!$var->isSerialize() && !method_exists($object, "__toString")) {
+            throw new exception("Cannot set variable '".$name."' from receptor '".$this->getBruteId()."' because the variable isn't serializable and value cannot be converted as a string!");
+        }
+
         $this->variables[$name] = $object;
         if ($this->isAutoSaveWhenSet()) $this->save();
     }

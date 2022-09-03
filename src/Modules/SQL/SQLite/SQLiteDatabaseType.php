@@ -64,7 +64,12 @@ class SQLiteDatabaseType extends SQLDatabaseType {
             if ($row == 0) $receptor->setId($value); // ID
 
             if ($row > 3) {
-                $receptor->getVariables()[$key] = unserialize($value);
+                $unserialized = unserialize($value);
+                if ($unserialized !== false) {
+                    $receptor->getVariables()[$key] = $unserialized;
+                } else {
+                    $receptor->getVariables()[$key] = $value;
+                }
             }
             $row++;
         }
@@ -83,7 +88,15 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
         foreach ($receptor->getVariables() as $key => $value) {
-            $query = $query . "`".$key."`='".serialize($value)."',";
+            if (!array_key_exists($key, Variable::$VARIABLES)) {
+                throw new exception("Cannot save variable '".$key."' because the instance of this variable cannot be found.");
+            } $var = Variable::$VARIABLES[$key];
+
+            if (!$var->isSerialize() && !method_exists($value, "__toString")) {
+                throw new exception("Cannot save variable '".$key."' because the variable isn't serializable and value cannot be converted as a string!");
+            }
+
+            $query = $query . "`" . $key . "`='" . ($var->isSerialize() ? serialize($value) : $value->__toString()) . "',";
         }
         $query = $query . "`last_update`='".parent::getAPIDate()."'";
 
@@ -113,7 +126,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
 
     public function variableLoad(SQLVariable|Variable $variable): void {
         try {
-            $this->query($variable->getTable()->getDatabase(), "ALTER TABLE '".$variable->getTable()->getName()."' ADD COLUMN '".$variable->getName()."' TEXT DEFAULT '".serialize($variable->getDefault())."';");
+            $this->query($variable->getTable()->getDatabase(), "ALTER TABLE '".$variable->getTable()->getName()."' ADD COLUMN '".$variable->getName()."' TEXT DEFAULT '". ($variable->isSerialize() ? serialize($variable->getDefault()) : strval($variable->getDefault())) ."';");
         } catch (Throwable $e) {
             if (str_contains($e->getMessage(), "duplicate column name: ".$variable->getName())) {
                 $e = new exception("Já existe uma coluna criada com o nome '".$variable->getName()."'", 2004);
