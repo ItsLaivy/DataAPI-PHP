@@ -40,7 +40,7 @@ class MySQLStatement extends DataStatement {
         }
     }
 
-    public function bindParameters(string $param, mixed $var): void {
+    public function bindParameters(string $param, array $var): void {
         try {
             $this->statement->bind_param($param, $var);
         } catch (Throwable $e) {

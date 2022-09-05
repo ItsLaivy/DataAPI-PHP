@@ -49,7 +49,7 @@ class SQLiteStatement extends DataStatement {
         }
     }
 
-    public function bindParameters(string $param, mixed $var): void {
+    public function bindParameters(string $param, array $var): void {
         if (!isset($this->statement)) {
             return;
         }
