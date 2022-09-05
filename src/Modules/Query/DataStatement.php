@@ -28,6 +28,4 @@ abstract class DataStatement {
 
     public abstract function close(): void;
 
-    public abstract function bindParameters(string $param, mixed... $var): void;
-
 }

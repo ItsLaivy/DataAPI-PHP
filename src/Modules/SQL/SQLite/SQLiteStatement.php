@@ -49,16 +49,11 @@ class SQLiteStatement extends DataStatement {
         }
     }
 
-    public function bindParameters(string $param, mixed... $var): void {
-        if (!isset($this->statement)) {
-            return;
-        }
-
-        try {
-            $this->statement->bindParam($param, $var);
-        } catch (Throwable $e) {
-            $this->getDatabase()->getDatabaseType()->throws($e);
-        }
+    /**
+     * @return SQLite3Stmt
+     */
+    public function getStatement(): SQLite3Stmt {
+        return $this->statement;
     }
 
 }

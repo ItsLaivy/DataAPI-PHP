@@ -40,14 +40,6 @@ class MySQLStatement extends DataStatement {
         }
     }
 
-    public function bindParameters(string $param, mixed... $var): void {
-        try {
-            $this->statement->bind_param($param, $var);
-        } catch (Throwable $e) {
-            $this->getDatabase()->getDatabaseType()->throws($e);
-        }
-    }
-
     /**
      * @return mysqli_stmt
      */
