@@ -48,4 +48,11 @@ class MySQLStatement extends DataStatement {
         }
     }
 
+    /**
+     * @return mysqli_stmt
+     */
+    public function getStatement(): mysqli_stmt {
+        return $this->statement;
+    }
+
 }
