@@ -26,7 +26,7 @@ class MySQLResult extends DataResult {
         if (isset($this->result)) {
             $result = array();
 
-            while ($row = $this->result->fetch_row()) {
+            while ($row = $this->result->fetch_assoc()) {
                 $result[] = $row;
             }
 
