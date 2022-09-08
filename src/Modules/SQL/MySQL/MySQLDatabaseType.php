@@ -105,7 +105,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function data(SQLReceptor|Receptor $receptor): array {
-        return $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " WHERE bruteid = '" . $receptor->getBruteId() . "'")->results();
+        return $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " WHERE bruteid = '" . $receptor->getBruteId() . "'")->results()[0];
     }
 
     /**
