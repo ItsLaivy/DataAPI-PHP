@@ -26,10 +26,10 @@ class MySQLResult extends DataResult {
         if (isset($this->result)) {
             $result = array();
 
-            while ($row = $this->result->fetch_assoc()) {
+            while ($row = $this->result->fetch_row()) {
                 $result[] = $row;
             }
-                         
+
             return $result;
         }
         return array();
