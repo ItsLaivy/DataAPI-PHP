@@ -24,10 +24,13 @@ class SQLiteResult extends DataResult {
 
     public function results(): array {
         if (isset($this->result)) {
-            $result = $this->result->fetchArray(SQLITE3_ASSOC);
-            if ($result !== false) {
-                return $result;
+            $result = array();
+
+            while ($row = $this->result->fetchArray(SQLITE3_ASSOC)) {
+                $result[] = $row;
             }
+
+            return $result;
         }
         return array();
     }
