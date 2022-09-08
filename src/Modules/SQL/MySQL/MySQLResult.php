@@ -24,10 +24,13 @@ class MySQLResult extends DataResult {
 
     public function results(): array {
         if (isset($this->result)) {
-            $result = $this->result->fetch_assoc();
-            if (is_array($result)) {
-                return $result;
+            $result = array();
+
+            while ($row = $this->result->fetch_assoc()) {
+                $result[] = $row;
             }
+                         
+            return $result;
         }
         return array();
     }
