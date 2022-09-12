@@ -46,7 +46,13 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     }
 
     public function data(SQLReceptor|Receptor $receptor): array {
-        return $receptor->getTable()->getDatabase()->query("SELECT * FROM '" . $receptor->getTable()->getName() . "' WHERE bruteid = '". $receptor->getBruteId() ."'")->results()[0];
+        $data = $receptor->getTable()->getDatabase()->query("SELECT * FROM '" . $receptor->getTable()->getName() . "' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
+
+        if (count($data) == 0) {
+            return array();
+        }
+
+        return $data[0];
     }
 
     /**
