@@ -129,8 +129,15 @@ class MySQLDatabaseType extends SQLDatabaseType {
         foreach ($assoc as $key => $value) {
             if ($row == 0) $receptor->setId($value); // ID
 
+            // Get variables list
+            $variables = array();
+            if (array_key_exists($receptor->getTable()->getIdentification(), SQLVariable::$SQL_VARIABLES)) {
+                $variables = SQLVariable::$SQL_VARIABLES[$receptor->getTable()->getIdentification()];
+            }
+            //
+
             if ($row > 3) {
-                new InactiveVariable($receptor, $key, $value);
+                new InactiveVariable($receptor, $key, $value, $variables);
             }
 
             $row++;

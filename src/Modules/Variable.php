@@ -5,7 +5,21 @@ use Exception;
 
 abstract class Variable {
 
+    /**
+     * @var Database[][]
+     */
     public static array $VARIABLES = array();
+
+    public static function getVariable(Database $database, string $name): Variable|null {
+        if (array_key_exists($database->getIdentification(), self::$VARIABLES)) {
+            foreach (self::$VARIABLES[$database->getIdentification()] as $variable) {
+                if ($variable->getName() == $name) {
+                    return $variable;
+                }
+            }
+        }
+        return null;
+    }
 
     private readonly string $name;
     private readonly Database $database;
@@ -33,7 +47,10 @@ abstract class Variable {
 
         $this->load();
 
-        self::$VARIABLES[$name] = $this;
+        if (!array_key_exists($database->getIdentification(), self::$VARIABLES)) {
+            self::$VARIABLES[$database->getIdentification()] = array();
+        }
+        self::$VARIABLES[$database->getIdentification()][] = $this;
     }
 
     protected function load(): void {

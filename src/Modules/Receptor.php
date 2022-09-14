@@ -41,6 +41,13 @@ abstract class Receptor {
     }
 
     /**
+     * @return Database
+     */
+    public function getDatabase(): Database {
+        return $this->database;
+    }
+
+    /**
      * @return array The active variables array
      */
     public function &getActiveVariables(): array {
@@ -65,6 +72,10 @@ abstract class Receptor {
      * @throws exception Caso a variável não seja encontrada
      */
     public function set(string $name, mixed $object): void {
+        if (!array_key_exists($name, $this->getActiveVariables())) {
+            throw new exception("Cannot find a active variable named '".$name."' at receptor '".$this->getBruteId()."'");
+        }
+        
         $this->getActiveVariables()[$name]->setData($object);
         if ($this->isAutoSaveWhenSet()) $this->save();
     }

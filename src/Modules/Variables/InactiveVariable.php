@@ -2,7 +2,6 @@
 namespace ItsLaivy\DataAPI\Modules\Variables;
 
 use ItsLaivy\DataAPI\Modules\Receptor;
-use ItsLaivy\DataAPI\Modules\Variable;
 
 class InactiveVariable {
 
@@ -11,7 +10,7 @@ class InactiveVariable {
 
     private readonly Receptor $receptor;
 
-    public function __construct(Receptor $receptor, string $name, string $data) {
+    public function __construct(Receptor $receptor, string $name, string $data, array $variables) {
         $this->name = $name;
         $this->data = $data;
         $this->receptor = $receptor;
@@ -20,11 +19,13 @@ class InactiveVariable {
             return;
         }
 
-        if (array_key_exists($name, Variable::$VARIABLES)) {
-            new ActiveVariable($receptor, Variable::$VARIABLES[$name], $this->data);
-        } else {
-            $receptor->getInactiveVariables()[$name] = $this;
+        foreach ($variables as $variable) {
+            if ($variable->getName() == $name) {
+                new ActiveVariable($receptor, $variable, $this->data);
+                return;
+            }
         }
+        $receptor->getInactiveVariables()[$name] = $this;
     }
 
     /**
