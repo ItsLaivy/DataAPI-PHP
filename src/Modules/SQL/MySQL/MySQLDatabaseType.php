@@ -104,7 +104,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function data(SQLReceptor|Receptor $receptor): array {
-        $data = $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE bruteid = '".$receptor->getBruteId()."'")->results();
+        $data = $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE id = '".$receptor->getId()."'")->results();
 
         if (count($data) == 0) {
             return array();
@@ -157,7 +157,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function receptorDelete(SQLReceptor|Receptor $receptor): void {
-        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE bruteid = '".$receptor->getBruteId()."'");
+        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE id = '".$receptor->getId()."'");
     }
 
     /**
@@ -168,9 +168,9 @@ class MySQLDatabaseType extends SQLDatabaseType {
         foreach ($receptor->getActiveVariables() as $variable) {
             $query = $query."`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
         }
-        $query = $query."`last_update`='".self::getAPIDate()."',`name`='".$receptor->getName()."'";
+        $query = $query."`last_update`='".self::getAPIDate()."',`name`='".$receptor->getName()."',`bruteid`='".$receptor->getBruteId()."'";
 
-        $this->query($receptor->getTable()->getDatabase(), "UPDATE ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
+        $this->query($receptor->getTable()->getDatabase(), "UPDATE ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." SET ".$query." WHERE id = '".$receptor->getId()."'");
     }
 
     /**

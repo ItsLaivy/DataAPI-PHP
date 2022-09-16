@@ -52,7 +52,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     }
 
     public function data(SQLReceptor|Receptor $receptor): array {
-        $data = $receptor->getTable()->getDatabase()->query("SELECT * FROM '".$receptor->getTable()->getName()."' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
+        $data = $receptor->getTable()->getDatabase()->query("SELECT * FROM '".$receptor->getTable()->getName()."' WHERE id = '". $receptor->getId() ."'")->results();
 
         if (count($data) == 0) {
             return array();
@@ -105,7 +105,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function receptorDelete(SQLReceptor|Receptor $receptor): void {
-        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM '".$receptor->getTable()->getName()."' WHERE bruteid = '".$receptor->getBruteId()."'");
+        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM '".$receptor->getTable()->getName()."' WHERE id = '".$receptor->getId()."'");
     }
 
     /**
@@ -118,7 +118,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
         }
         $query = $query."`last_update`='".self::getAPIDate()."',`name`='".$receptor->getName()."'";
 
-        $this->query($receptor->getTable()->getDatabase(), "UPDATE '".$receptor->getTable()->getName()."' SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
+        $this->query($receptor->getTable()->getDatabase(), "UPDATE '".$receptor->getTable()->getName()."' SET ".$query." WHERE id = '".$receptor->getId()."'");
     }
 
     /**

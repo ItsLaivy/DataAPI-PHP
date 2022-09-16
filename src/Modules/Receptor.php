@@ -8,8 +8,9 @@ abstract class Receptor {
     public static array $RECEPTORS = array();
 
     private readonly Database $database;
+
     private string $name;
-    private readonly string $bruteId;
+    private string $bruteId;
 
     protected int $id;
     protected bool $new = false;
@@ -119,6 +120,12 @@ abstract class Receptor {
      */
     public function getBruteId(): string {
         return $this->bruteId;
+    }
+    /**
+     * @param string $bruteId
+     */
+    public function setBruteId(string $bruteId): void {
+        $this->bruteId = $bruteId;
     }
 
     /**
