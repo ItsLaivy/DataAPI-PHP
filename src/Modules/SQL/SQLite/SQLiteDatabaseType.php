@@ -38,7 +38,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function statement(SQLiteDatabase|Database $database, string $query): SQLiteStatement {
-        return new MySQLStatement($database, $query);
+        return new SQLiteStatement($database, $query);
     }
     public function query(SQLiteDatabase|Database $database, string $query): SQLiteResult {
         return $this->statement($database, $query)->execute();
