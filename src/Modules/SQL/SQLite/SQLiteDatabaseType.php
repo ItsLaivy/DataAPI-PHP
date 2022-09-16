@@ -7,7 +7,11 @@ namespace ItsLaivy\DataAPI\Modules\SQL\SQLite;
 
 use Exception;
 use ItsLaivy\DataAPI\Modules\Database;
+use ItsLaivy\DataAPI\Modules\Query\DataResult;
 use ItsLaivy\DataAPI\Modules\Receptor;
+use ItsLaivy\DataAPI\Modules\SQL\MySQL\MySQLDatabase;
+use ItsLaivy\DataAPI\Modules\SQL\MySQL\MySQLStatement;
+use ItsLaivy\DataAPI\Modules\SQL\SQLDatabase;
 use ItsLaivy\DataAPI\Modules\SQL\SQLDatabaseType;
 use ItsLaivy\DataAPI\Modules\SQL\SQLReceptor;
 use ItsLaivy\DataAPI\Modules\SQL\SQLTable;
@@ -30,12 +34,14 @@ class SQLiteDatabaseType extends SQLDatabaseType {
         return array(2003, 2004);
     }
 
-    public function query(SQLiteDatabase|Database $database, string $query): void {
-        try {
-            $database->query($query);
-        } catch (Throwable $e) {
-            $this->throws($e);
-        }
+    /**
+     * @throws Throwable
+     */
+    public function statement(SQLiteDatabase|Database $database, string $query): SQLiteStatement {
+        return new MySQLStatement($database, $query);
+    }
+    public function query(SQLiteDatabase|Database $database, string $query): SQLiteResult {
+        return $this->statement($database, $query)->execute();
     }
 
     /**
@@ -46,7 +52,17 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     }
 
     public function data(SQLReceptor|Receptor $receptor): array {
-        $data = $receptor->getTable()->getDatabase()->query("SELECT * FROM '" . $receptor->getTable()->getName() . "' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
+        $data = $receptor->getTable()->getDatabase()->query("SELECT * FROM '".$receptor->getTable()->getName()."' WHERE bruteid = '". $receptor->getBruteId() ."'")->results();
+
+        if (count($data) == 0) {
+            return array();
+        }
+
+        return $data[0];
+    }
+
+    public function receptorById(SQLTable $table, int $id): array {
+        $data = $this->query($table->getDatabase(), "SELECT * FROM '".$table->getName()."' WHERE id = '".$id."'")->results();
 
         if (count($data) == 0) {
             return array();
@@ -61,7 +77,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     public function receptorLoad(SQLReceptor|Receptor $receptor): void {
         $assoc = $this->data($receptor);
         if (empty($assoc)) {
-            $this->query($receptor->getTable()->getDatabase(), "INSERT INTO '" . $receptor->getTable()->getName() . "' (name,bruteid,last_update) VALUES ('".$receptor->getName()."','".$receptor->getBruteId()."','".parent::getAPIDate()."')");
+            $this->query($receptor->getTable()->getDatabase(), "INSERT INTO '".$receptor->getTable()->getName()."' (name,bruteid,last_update) VALUES ('".$receptor->getName()."','".$receptor->getBruteId()."','".parent::getAPIDate()."')");
             $assoc = $this->data($receptor);
             $receptor->setNew(true);
         }
@@ -98,9 +114,9 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
         foreach ($receptor->getActiveVariables() as $variable) {
-            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
+            $query = $query."`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
         }
-        $query = $query . "`last_update`='".self::getAPIDate()."'";
+        $query = $query."`last_update`='".self::getAPIDate()."',`name`='".$receptor->getName()."'";
 
         $this->query($receptor->getTable()->getDatabase(), "UPDATE '".$receptor->getTable()->getName()."' SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
@@ -123,7 +139,7 @@ class SQLiteDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function tableDelete(SQLTable $table): void {
-        $this->query($table->getDatabase(), "DROP TABLE '".$table->getName() . "'");
+        $this->query($table->getDatabase(), "DROP TABLE '".$table->getName()."'");
     }
 
     public function variableLoad(SQLVariable|Variable $variable): void {

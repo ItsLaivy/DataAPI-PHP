@@ -53,7 +53,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
         $this->treeConnection = new mysqli($this->address, $this->user, $this->password, null, $this->port);
 
         if ($this->treeConnection->connect_errno) {
-            throw new exception("Não foi possível conectar-se ao banco de dados MySQL: '" . $this->treeConnection->connect_error . "'");
+            throw new exception("Não foi possível conectar-se ao banco de dados MySQL: '".$this->treeConnection->connect_error."'");
         }
         $this->treeConnection->set_charset("utf8");
         $this->conn_opened = true;
@@ -96,8 +96,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
     public function statement(MySQLDatabase|Database $database, string $query): MySQLStatement {
         return new MySQLStatement($database, $query);
     }
-
-    public function query(MySQLDatabase|Database $database, string $query): DataResult {
+    public function query(MySQLDatabase|Database $database, string $query): MySQLResult {
         return $this->statement($database, $query)->execute();
     }
 
@@ -105,7 +104,17 @@ class MySQLDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function data(SQLReceptor|Receptor $receptor): array {
-        $data = $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " WHERE bruteid = '" . $receptor->getBruteId() . "'")->results();
+        $data = $this->query($receptor->getTable()->getDatabase(), "SELECT * FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE bruteid = '".$receptor->getBruteId()."'")->results();
+
+        if (count($data) == 0) {
+            return array();
+        }
+
+        return $data[0];
+    }
+
+    public function receptorById(SQLTable $table, int $id): array {
+        $data = $this->query($table->getDatabase(), "SELECT * FROM ".$table->getDatabase()->getName().".".$table->getName()." WHERE id = '".$id."'")->results();
 
         if (count($data) == 0) {
             return array();
@@ -120,7 +129,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
     public function receptorLoad(SQLReceptor|Receptor $receptor): void {
         $assoc = $this->data($receptor);
         if (empty($assoc)) {
-            $this->query($receptor->getTable()->getDatabase(), "INSERT INTO " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " (name,bruteid,last_update) VALUES ('" . $receptor->getName() . "','" . $receptor->getBruteId() . "','" . parent::getAPIDate() . "')");
+            $this->query($receptor->getTable()->getDatabase(), "INSERT INTO ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." (name,bruteid,last_update) VALUES ('".$receptor->getName()."','".$receptor->getBruteId()."','".parent::getAPIDate()."')");
             $assoc = $this->data($receptor);
             $receptor->setNew(true);
         }
@@ -148,7 +157,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
      * @throws Throwable
      */
     public function receptorDelete(SQLReceptor|Receptor $receptor): void {
-        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM " . $receptor->getTable()->getDatabase()->getName() . "." . $receptor->getTable()->getName() . " WHERE bruteid = '" . $receptor->getBruteId() . "'");
+        $this->query($receptor->getTable()->getDatabase(), "DELETE FROM ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
 
     /**
@@ -157,9 +166,9 @@ class MySQLDatabaseType extends SQLDatabaseType {
     public function save(SQLReceptor|Receptor $receptor): void {
         $query = "";
         foreach ($receptor->getActiveVariables() as $variable) {
-            $query = $query . "`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
+            $query = $query."`".$variable->getVariable()->getName()."`='".($variable->getVariable()->isSerialize() ? serialize($variable->getData()) : $variable->getData())."',";
         }
-        $query = $query . "`last_update`='".self::getAPIDate()."'";
+        $query = $query."`last_update`='".self::getAPIDate()."',`name`='".$receptor->getName()."'";
 
         $this->query($receptor->getTable()->getDatabase(), "UPDATE ".$receptor->getTable()->getDatabase()->getName().".".$receptor->getTable()->getName()." SET ".$query." WHERE bruteid = '".$receptor->getBruteId()."'");
     }
@@ -169,31 +178,31 @@ class MySQLDatabaseType extends SQLDatabaseType {
      */
     public
     function tableLoad(SQLTable $table): void {
-        $this->query($table->getDatabase(), "CREATE TABLE " . $table->getDatabase()->getName() . "." . $table->getName() . " (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(128), bruteid VARCHAR(128), last_update VARCHAR(21));");
+        $this->query($table->getDatabase(), "CREATE TABLE ".$table->getDatabase()->getName().".".$table->getName()." (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(128), bruteid VARCHAR(128), last_update VARCHAR(21));");
     }
 
     /**
      * @throws Throwable
      */
     public function tableDelete(SQLTable $table): void {
-        $this->query($table->getDatabase(), "DROP TABLE " . $table->getDatabase()->getName() . "." . $table->getName());
+        $this->query($table->getDatabase(), "DROP TABLE ".$table->getDatabase()->getName().".".$table->getName());
     }
 
     public function variableLoad(SQLVariable|Variable $variable): void {
-        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " ADD COLUMN " . $variable->getName() . " MEDIUMTEXT DEFAULT '" . ($variable->isSerialize() ? serialize($variable->getDefault()) : strval($variable->getDefault())) . "';");
+        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE ".$variable->getTable()->getDatabase()->getName().".".$variable->getTable()->getName()." ADD COLUMN ".$variable->getName()." MEDIUMTEXT DEFAULT '".($variable->isSerialize() ? serialize($variable->getDefault()) : strval($variable->getDefault()))."';");
     }
 
     public function variableDelete(SQLVariable|Variable $variable): void {
-        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " DROP COLUMN " . $variable->getName());
+        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE ".$variable->getTable()->getDatabase()->getName().".".$variable->getTable()->getName()." DROP COLUMN ".$variable->getName());
     }
 
     public function databaseLoad(MySQLDatabase|Database $database): void {
         if (!($database instanceof MySQLDatabase)) return;
-        $this->query($database, "CREATE DATABASE " . $database->getName());
+        $this->query($database, "CREATE DATABASE ".$database->getName());
     }
 
     public function databaseDelete(MySQLDatabase|Database $database): void {
         if (!($database instanceof MySQLDatabase)) return;
-        $this->query($database, "DROP DATABASE " . $database->getName());
+        $this->query($database, "DROP DATABASE ".$database->getName());
     }
 }

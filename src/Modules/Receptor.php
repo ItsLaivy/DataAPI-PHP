@@ -8,7 +8,7 @@ abstract class Receptor {
     public static array $RECEPTORS = array();
 
     private readonly Database $database;
-    private readonly string $name;
+    private string $name;
     private readonly string $bruteId;
 
     protected int $id;
@@ -65,6 +65,9 @@ abstract class Receptor {
      * @throws exception Caso a variável não seja encontrada
      */
     public function get(string $name): mixed {
+        if (!array_key_exists($name, $this->getActiveVariables())) {
+            throw new exception("Cannot find a active variable named '".$name."' at receptor '".$this->getBruteId()."'");
+        }
         return $this->getActiveVariables()[$name]->getData();
     }
 
@@ -103,6 +106,12 @@ abstract class Receptor {
      */
     public function getName(): string {
         return $this->name;
+    }
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
     }
 
     /**

@@ -10,8 +10,6 @@ abstract class Database {
     protected readonly DatabaseType $databaseType;
     protected readonly string $name;
 
-    private readonly array $tables;
-
     /**
      * @throws exception caso o banco de dados já exista
      */
@@ -23,15 +21,6 @@ abstract class Database {
         $databaseType->getDatabases()[$name] = $this;
 
         Database::$DATABASES[$name] = $this;
-
-        $this->tables = array();
-    }
-
-    /**
-     * @return array
-     */
-    public function getTables(): array {
-        return $this->tables;
     }
 
     public function __sleep(): array {
@@ -49,7 +38,7 @@ abstract class Database {
      * Foi feito para uso interno, é usado para armazenar nas variáveis sem precisar saltar o objeto inteiro
      */
     public function getIdentification(): string {
-        return $this->getDatabaseType()->getName() . "-" . $this->getName();
+        return $this->getDatabaseType()->getName()."-".$this->getName();
     }
 
     /**

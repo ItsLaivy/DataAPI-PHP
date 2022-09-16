@@ -44,7 +44,7 @@ class SQLTable {
      * Foi feito para uso interno, é usado para armazenar nas variáveis sem precisar saltar o objeto inteiro
      */
     public function getIdentification(): string {
-        return $this->getDatabase()->getIdentification() . "-" . $this->getName();
+        return $this->getDatabase()->getIdentification()."-".$this->getName();
     }
 
     public function delete(): void {

@@ -22,7 +22,7 @@ class SQLiteDatabase extends SQLDatabase {
     }
 
     public function getFileName(): string {
-        return $this->databaseType->getPath() . "/" . $this->getName() . ".db";
+        return $this->databaseType->getPath()."/".$this->getName().".db";
     }
 
     /**
