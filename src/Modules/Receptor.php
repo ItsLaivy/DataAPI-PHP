@@ -125,8 +125,9 @@ abstract class Receptor {
     /**
      * @param string $bruteId
      */
-    public function setBruteId(string $bruteId): void {
+    public function setBruteId(string $bruteId): bool {
         $this->bruteId = $bruteId;
+        return true;
     }
 
     /**

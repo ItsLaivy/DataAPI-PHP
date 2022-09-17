@@ -25,6 +25,18 @@ class SQLReceptor extends Receptor {
         parent::unload($save);
     }
 
+    public function setBruteId(string $bruteId): bool {
+        $receptor = new SQLReceptor($this->getTable(), "DEBUG ONLY! REPORT IF THIS RECEPTOR IS VISIBLE!", $bruteId);
+        $receptor->unload(false);
+        if ($receptor->isNew()) {
+            $receptor->delete();
+        } else {
+            return false;
+        }
+
+        return parent::setBruteId($bruteId);
+    }
+
     public static function getBruteIdById(SQLTable $table, int $id): string|null {
         $array = $table->getDatabase()->getDatabaseType()->receptorById($table, $id);
 
