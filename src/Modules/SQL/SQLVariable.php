@@ -27,7 +27,7 @@ class SQLVariable extends Variable {
 
     public function __construct(SQLTable $table, string $name, mixed $default, bool $serialize = true, bool $temporary = false) {
         $keys = array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","_");
-        foreach (explode("", $name) as $char) {
+        foreach (str_split($name) as $char) {
             foreach ($keys as $allowed) {
                 if ($char == $allowed) {
                     continue 2;
