@@ -49,14 +49,15 @@ class SQLTable {
 
     public function delete(): void {
         // Unload receptors
-        foreach ($this->getReceptors() as $name => $receptor) {
+        foreach ($this->getReceptors() as $receptor) {
             $receptor->unload(false);
         }
         // Unload Variables
-        foreach ($this->getVariables() as $name => $variable) {
+        foreach ($this->getVariables() as $variable) {
             $variable->delete();
         }
 
+        unset($this->getDatabase()->getTables()[$this->getName()]);
         $this->database->getDatabaseType()->tableDelete($this);
     }
 

@@ -35,6 +35,7 @@ abstract class Receptor {
 
     public function unload(bool $save): void {
         if ($save) $this->save();
+        unset(Receptor::$RECEPTORS[$this->getBruteId()]);
     }
     public function delete(): void {
         $this->unload(false);

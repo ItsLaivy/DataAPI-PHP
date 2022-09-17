@@ -35,6 +35,10 @@ abstract class Variable {
      * @param bool $temporary If true the variable will not save into the database
      */
     public function __construct(Database $database, string $name, mixed $default, bool $serialize = true, bool $temporary = false) {
+        if ($name == 'id' || $name == 'name' || $name == 'bruteid' || $name == 'last_update') {
+            throw new exception("The name '".$name."' cannot be used in a variable because its already in use by the api");
+        }
+
         $this->name = $name;
         $this->database = $database;
         $this->default = $default;
@@ -58,7 +62,6 @@ abstract class Variable {
     }
 
     public function delete(): void {
-        unset($_SESSION['dataapi']['Variables'][$this->database->getIdentification()][$this->getName()]);
         $this->database->getDatabaseType()->variableDelete($this);
     }
 
