@@ -45,37 +45,22 @@ abstract class Variable {
         $this->database->getDatabaseType()->variableDelete($this);
     }
 
-    /**
-     * @return bool
-     */
     public function isSerialize(): bool {
         return $this->serialize;
     }
 
-    /**
-     * @return string o nome da variável
-     */
     public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @return Database
-     */
     public function getDatabase(): Database {
         return $this->database;
     }
-
-    /**
-     * @return mixed o valor padrão da variável
-     */
+    
     public function getDefault(): mixed {
         return $this->default;
     }
 
-    /**
-     * @return bool se uma variável for temporária, ela não será salva no banco de dados, e ficará apenas na memória do servidor
-     */
     public function isTemporary(): bool {
         return $this->temporary;
     }

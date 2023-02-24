@@ -10,11 +10,11 @@ abstract class SQLDatabaseType extends DatabaseType {
     // Tables
 
     /**
-     * É chamado sempre que uma tabela é carregada/criada
+     * It's called after a table are loaded/created
      */
     public abstract function tableLoad(SQLTable $table): void;
     /**
-     * É chamado quando uma tabela é deletada
+     * Called when a table is deleted
      */
     public abstract function tableDelete(SQLTable $table): void;
 
@@ -23,4 +23,6 @@ abstract class SQLDatabaseType extends DatabaseType {
 
     public abstract function variableDelete(SQLVariable|Variable $variable): void;
 
+    public abstract function receptorsFromVariableValue(SQLVariable $variable, mixed $value): array;
+    
 }

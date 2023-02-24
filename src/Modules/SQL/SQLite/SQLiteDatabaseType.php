@@ -146,4 +146,21 @@ class SQLiteDatabaseType extends SQLDatabaseType {
     public function close(): void {
         // TODO: Implement close() method.
     }
+    
+    public function receptorsFromVariableValue(SQLVariable $variable, mixed $value): array {
+        if ($variable->getDatabase()->getDatabaseType() != $this) {
+            throw new Exception("This variable's databasetype isn't the same as requested.");
+        }
+        
+        if ($variable->isSerialize()) {
+            $new_value = serialize($value);
+        } else {
+            if (!method_exists($value, "__toString")) {
+                throw new exception("To get the receptors from a variable value, the value param object needs to implement the __toString");
+            }
+            $new_value = $value->__toString();
+        }
+    
+        return $variable->getTable()->getDatabase()->query("SELECT * FROM '" . $variable->getTable()->getName() . "' WHERE ".$variable->getName()." = '". $new_value ."'")->results();
+    }
 }

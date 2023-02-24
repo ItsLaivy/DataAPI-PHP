@@ -17,15 +17,12 @@ abstract class DatabaseType {
         $this->DATABASES = array();
     }
 
-    /**
-     * @return array
-     */
     public function getDatabases(): array {
         return $this->DATABASES;
     }
 
     /**
-     * @throws Throwable caso o erro não esteja categorizado em commonErrors()
+     * @throws Throwable if the error isn't at the {@link suppressedErrors()}
      */
     public function throws(Throwable $throwable): void {
         $this->throwsDirectly($throwable->getCode(), $throwable->getMessage());
@@ -37,9 +34,6 @@ abstract class DatabaseType {
         return $dt->format('d/m/y H:i:s');
     }
 
-    /**
-     * @throws Exception
-     */
     public function throwsDirectly(int $tCode, string $tMessage): void {
         $throws = true;
         foreach ($this->suppressedErrors() as $code) {

@@ -12,11 +12,15 @@ class SQLTable {
     private readonly array $variables;
 
     /**
-     * @throws Exception Caso já exista uma tabela com esses valores no banco de dados
+     * @throws Exception throws in case of already have this table loaded.
      */
     public function __construct(SQLDatabase $database, string $name) {
         $this->database = $database;
         $this->name = $name;
+        
+        if (array_key_exists($name, $this->database->getTables())) {
+            throw new Exception("This database '". $database->getName() ."' already contains a table named '".$name."'");
+        }
 
         $this->database->getDatabaseType()->tableLoad($this);
 
@@ -41,7 +45,7 @@ class SQLTable {
     }
 
     /**
-     * Foi feito para uso interno, é usado para armazenar nas variáveis sem precisar saltar o objeto inteiro
+     * Created for internal use purposes.
      */
     public function getIdentification(): string {
         return $this->getDatabase()->getIdentification() . "-" . $this->getName();
@@ -59,17 +63,11 @@ class SQLTable {
 
         $this->database->getDatabaseType()->tableDelete($this);
     }
-
-    /**
-     * @return SQLDatabase banco de dados da tabela
-     */
+    
     public function getDatabase(): SQLDatabase {
         return $this->database;
     }
-
-    /**
-     * @return string nome da tabela
-     */
+    
     public function getName(): string {
         return $this->name;
     }

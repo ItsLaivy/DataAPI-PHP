@@ -13,16 +13,20 @@ abstract class Database {
     private readonly array $tables;
 
     /**
-     * @throws exception caso o banco de dados já exista
+     * @throws exception throws if a database with that name already exists
      */
     public function __construct(DatabaseType $databaseType, string $name) {
         $this->databaseType = $databaseType;
         $this->name = $name;
 
+        if (array_key_exists($name, self::$DATABASES)) {
+            throw new Exception("A database named '". $name ."' already exists");
+        }
+        
         $databaseType->databaseLoad($this);
         $databaseType->getDatabases()[$name] = $this;
-
-        Database::$DATABASES[$name] = $this;
+    
+        self::$DATABASES[$name] = $this;
 
         $this->tables = array();
     }
@@ -44,24 +48,18 @@ abstract class Database {
     public function delete(): void {
         $this->getDatabaseType()->databaseDelete($this);
     }
-
+    
     /**
-     * Foi feito para uso interno, é usado para armazenar nas variáveis sem precisar saltar o objeto inteiro
+     * Created for internal use purposes.
      */
     public function getIdentification(): string {
         return $this->getDatabaseType()->getName() . "-" . $this->getName();
     }
 
-    /**
-     * @return DatabaseType tipo do banco de dados
-     */
     public function getDatabaseType(): DatabaseType {
         return $this->databaseType;
     }
 
-    /**
-     * @return string nome
-     */
     public function getName(): string {
         return $this->name;
     }

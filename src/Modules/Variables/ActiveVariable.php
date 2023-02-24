@@ -19,24 +19,15 @@ class ActiveVariable {
 
         $receptor->getActiveVariables()[$variable->getName()] = $this;
     }
-
-    /**
-     * @return Receptor receptor da variável inativa
-     */
+    
     public function getReceptor(): Receptor {
         return $this->receptor;
     }
 
-    /**
-     * @return Variable a variável
-     */
     public function getVariable(): Variable {
         return $this->variable;
     }
-
-    /**
-     * @return mixed valor da variável
-     */
+    
     public function getData(): mixed {
         return $this->data;
     }

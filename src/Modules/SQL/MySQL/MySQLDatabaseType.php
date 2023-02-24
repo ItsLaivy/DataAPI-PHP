@@ -119,6 +119,8 @@ class MySQLDatabaseType extends SQLDatabaseType {
             $receptor->setNew(true);
         }
 
+        $assoc = $assoc[0];
+        
         $row = 0;
         foreach ($assoc as $key => $value) {
             if ($row == 0) $receptor->setId($value); // ID
@@ -182,5 +184,22 @@ class MySQLDatabaseType extends SQLDatabaseType {
     public function databaseDelete(MySQLDatabase|Database $database): void {
         if (!($database instanceof MySQLDatabase)) return;
         $this->query($database, "DROP DATABASE " . $database->getName());
+    }
+    
+    public function receptorsFromVariableValue(SQLVariable $variable, mixed $value): array {
+        if ($variable->getDatabase()->getDatabaseType() != $this) {
+            throw new Exception("This variable's databasetype isn't the same as requested.");
+        }
+        
+        if ($variable->isSerialize()) {
+            $new_value = serialize($value);
+        } else {
+            if (!method_exists($value, "__toString")) {
+                throw new exception("To get the receptors from a variable value, the value param object needs to implement the __toString");
+            }
+            $new_value = $value->__toString();
+        }
+    
+        return $this->query($variable->getTable()->getDatabase(), "SELECT * FROM " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " WHERE ".$variable->getName()." = '" . $new_value . "'")->results();
     }
 }

@@ -27,23 +27,14 @@ class InactiveVariable {
         }
     }
 
-    /**
-     * @return Receptor receptor da variável inativa
-     */
     public function getReceptor(): Receptor {
         return $this->receptor;
     }
 
-    /**
-     * @return string nome da variável
-     */
     public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @return mixed valor da variável
-     */
     public function getData(): string {
         return $this->data;
     }

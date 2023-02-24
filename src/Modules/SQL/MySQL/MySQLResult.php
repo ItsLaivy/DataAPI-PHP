@@ -24,7 +24,7 @@ class MySQLResult extends DataResult {
 
     public function results(): array {
         if (isset($this->result)) {
-            $result = $this->result->fetch_assoc();
+            $result = $this->result->fetch_all(MYSQLI_ASSOC);
             if (is_array($result)) {
                 return $result;
             }
