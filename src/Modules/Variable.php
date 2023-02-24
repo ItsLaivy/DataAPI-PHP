@@ -41,8 +41,8 @@ abstract class Variable {
     }
 
     public function delete(): void {
-        unset($_SESSION['dataapi']['Variables'][$this->database->getIdentification()][$this->getName()]);
         $this->database->getDatabaseType()->variableDelete($this);
+        unset(self::$VARIABLES[$this->getName()]);
     }
 
     public function isSerialize(): bool {

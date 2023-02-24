@@ -47,6 +47,7 @@ abstract class Database {
 
     public function delete(): void {
         $this->getDatabaseType()->databaseDelete($this);
+        unset(self::$DATABASES[$this->getName()]);
     }
     
     /**

@@ -8,7 +8,7 @@ abstract class Receptor {
     public static array $RECEPTORS = array();
 
     private readonly Database $database;
-    private readonly string $name;
+    private string $name;
     private readonly string $bruteId;
 
     protected int $id;
@@ -38,6 +38,7 @@ abstract class Receptor {
 
     public function unload(bool $save): void {
         if ($save) $this->save();
+        unset(self::$RECEPTORS[$this->getBruteId()]);
     }
     public function delete(): void {
         $this->unload(false);
@@ -75,6 +76,9 @@ abstract class Receptor {
     
     public function getName(): string {
         return $this->name;
+    }
+    public function setName(string $name): void {
+        $this->name = $name;
     }
 
     public function getBruteId(): string {
