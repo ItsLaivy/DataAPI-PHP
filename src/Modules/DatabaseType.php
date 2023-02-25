@@ -31,7 +31,7 @@ abstract class DatabaseType {
     function getAPIDate(): string {
         $dt = new DateTime("now", new DateTimeZone('America/Sao_Paulo'));
         $dt->setTimestamp(time());
-        return $dt->format('d/m/y H:i:s');
+            return $dt->format('d/m/Y H:i:s');
     }
 
     public function throwsDirectly(int $tCode, string $tMessage): void {
