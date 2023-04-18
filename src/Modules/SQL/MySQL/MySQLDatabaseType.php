@@ -169,7 +169,7 @@ class MySQLDatabaseType extends SQLDatabaseType {
     }
 
     public function variableLoad(SQLVariable|Variable $variable): void {
-        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " ADD COLUMN " . $variable->getName() . " MEDIUMTEXT DEFAULT '" . ($variable->isSerialize() ? serialize($variable->getDefault()) : strval($variable->getDefault())) . "';");
+        $this->query($variable->getTable()->getDatabase(), "ALTER TABLE " . $variable->getTable()->getDatabase()->getName() . "." . $variable->getTable()->getName() . " ADD COLUMN " . $variable->getName() . " MEDIUMTEXT;");
     }
 
     public function variableDelete(SQLVariable|Variable $variable): void {

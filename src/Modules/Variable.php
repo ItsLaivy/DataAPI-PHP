@@ -27,7 +27,7 @@ abstract class Variable {
         $this->serialize = $serialize;
         $this->temporary = $temporary;
 
-        if (!$this->serialize && !method_exists($default, "__toString")) {
+        if (!$this->serialize && ($this->default != null && !method_exists($default, "__toString"))) {
             throw new exception("To use the serialize = false option, the default value object needs to implement the __toString");
         }
 
