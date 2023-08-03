@@ -7,11 +7,11 @@ use ItsLaivy\DataAPI\Modules\Variable;
 class InactiveVariable {
 
     private readonly string $name;
-    private readonly string $data;
+    private readonly ?string $data;
 
     private readonly Receptor $receptor;
 
-    public function __construct(Receptor $receptor, string $name, string $data) {
+    public function __construct(Receptor $receptor, string $name, ?string $data) {
         $this->name = $name;
         $this->data = $data;
         $this->receptor = $receptor;
@@ -35,7 +35,7 @@ class InactiveVariable {
         return $this->name;
     }
 
-    public function getData(): string {
+    public function getData(): ?string {
         return $this->data;
     }
 
