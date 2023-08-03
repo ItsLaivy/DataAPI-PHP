@@ -12,7 +12,7 @@ class ActiveVariable {
 
     private mixed $data;
 
-    public function __construct(Receptor $receptor, Variable $variable, string $data) {
+    public function __construct(Receptor $receptor, Variable $variable, mixed $data) {
         $this->variable = $variable;
         $this->data = $variable->isSerialize() ? unserialize($data) : $data;
         $this->receptor = $receptor;
